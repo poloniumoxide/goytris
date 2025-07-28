@@ -1,4 +1,3 @@
-/*
 #ifndef DATA_H
 #define DATA_H
 
@@ -46,4 +45,4 @@ vector<vector<vector<int>>> tetrominos =
 
 int ioljszt = 0;
 
-#endif*/
+#endif
