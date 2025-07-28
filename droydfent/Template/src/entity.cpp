@@ -1,9 +1,7 @@
 #include "entity.h"
 
-using namespace std;
-
 Entity::Entity() : atkbar(0, 0), defbar(0, 0) {
-
+    stack = Stacker();
 }
 
 void Entity::run() {

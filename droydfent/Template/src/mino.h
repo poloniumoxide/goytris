@@ -1,6 +1,8 @@
 #ifndef MINO_H
 #define MINO_H
 
+#include <vector>
+
 using namespace std;
 
 class Mino {

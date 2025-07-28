@@ -1,12 +1,10 @@
 #include "stacker.h"
 
-using namespace std;
-
     Stacker::Stacker(){
-        vector<Mino> row(width);
-        vector<vector<Mino>> board(height, row);
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
+        vector<Mino> row(D["board"]["width"]);
+        vector<vector<Mino>> board(D["board"]["height"], row);
+        for (int i = 0; i < D["board"]["height"]; i++) {
+            for (int j = 0; j < D["board"]["width"]; j++) {
                 Mino m(j, i);
                 board[j][i] = m;
             }
@@ -33,7 +31,7 @@ using namespace std;
     }
 
     bool Stacker::fit(Mino t, int dx, int dy) {
-        if ((t.x+dx < 0) | (t.x+dx >= width) | (t.y+dy < 0) | (t.y+dy >= height)) {
+        if ((t.x+dx < 0) | (t.x+dx >= D["board"]["width"]) | (t.y+dy < 0) | (t.y+dy >= D["board"]["height"])) {
             return false;
         }
         return (board[t.y + dy][t.x + dx].type <= 1);

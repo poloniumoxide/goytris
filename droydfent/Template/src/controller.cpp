@@ -1,13 +1,31 @@
 #include "controller.h"
-#include "defaultdata.h"
 
-
-using namespace std;
 
     Controller::Controller() {
         held = {0, 0, 0, 0, 0, 0, 0, 0}; //8, l, r, cw, ccw, 180, hold, sd, hd 
-        order = {kleft, kright, kcw, kccw, k180, khold, ksd, khd};
         inputs = {};
+        ste = {
+            {"KEY_LEFT" , KEY_LEFT},
+            {"KEY_RIGHT" , KEY_RIGHT},
+            {"KEY_UP" , KEY_UP},
+            {"KEY_DOWN" , KEY_DOWN},
+            {"KEY_W" , KEY_W},
+            {"KEY_E" , KEY_E},
+            {"KEY_Q" , KEY_Q},
+            {"KEY_SPACE" , KEY_SPACE}
+        };
+
+        kleft = ste[D["keybinds"]["kleft"]];
+        kright = ste[D["keybinds"]["kright"]];
+        kcw = ste[D["keybinds"]["kcw"]];
+        kccw = ste[D["keybinds"]["kccw"]];
+        k180 = ste[D["keybinds"]["k180"]];
+        khold = ste[D["keybinds"]["khold"]];
+        ksd = ste[D["keybinds"]["ksd"]];
+        khd = ste[D["keybinds"]["khd"]];
+
+        order = {kleft, kright, kcw, kccw, k180, khold, ksd, khd};
+
     }
 
     void Controller::run() {
@@ -15,15 +33,15 @@ using namespace std;
         for (int i = 0; i < order.size(); i ++) {
             checkheld(order[i], i);
         }
-        if (held[kleft] >= das) {
-            int p = held[kleft]-das;
-            if (p%arr == 0) {
+        if (held[kleft] >= D["handling"]["das"]) {
+            int p = held[kleft]-(int)D["handling"]["das"];
+            if (p%(int)D["handling"]["arr"] == 0) {
                 inputs.push_back(2);
             }
         }
-        if (held[kright] >= das) {
-            int p = held[kright]-das;
-            if (p%arr == 0) {
+        if (held[kright] >= D["handling"]["das"]) {
+            int p = held[kright]-(int)D["handling"]["das"];
+            if (p%(int)D["handling"]["arr"] == 0) {
                 inputs.push_back(3);
             }
         }
@@ -40,11 +58,11 @@ using namespace std;
             inputs.push_back(9);
         }
         if (held[ksd] > 0) {
-            if (sdf == 0) {
+            if ((int)D["handling"]["sdf"] == 0) {
                 for (int i = 0; i < 40; i++) {
                     inputs.push_back(1);
                 }
-            } else if (held[ksd]%sdf == 0) {
+            } else if (held[ksd]%(int)D["handling"]["sdf"] == 0) {
                 inputs.push_back(1);
             }
         }

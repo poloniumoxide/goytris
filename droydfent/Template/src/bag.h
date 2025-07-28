@@ -2,7 +2,7 @@
 #define BAG_H
 
 #include "minoset.h"
-#include "defaultdata.h"
+#include "jsonparser.h"
 
 #include <algorithm>
 #include <random>

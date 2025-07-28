@@ -1,7 +1,5 @@
 #include "force.h"
 
-using namespace std;
-
 
     vector<vector<int>> f;
 
