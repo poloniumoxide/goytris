@@ -1,31 +1,21 @@
-#include "force.cpp"
-#include "stacker.cpp"
-
-#include <vector>
+#include "entity.h"
 
 using namespace std;
 
-class Entity {
-public:
+Entity::Entity() : atkbar(0, 0), defbar(0, 0) {
 
-    int hp;
-    vector<int> attack_table;
-    Stacker stack;
-    Force atkbar;
-    Force defbar;
+}
 
-    void run() {
-        sent();
-        stack.run();
-        send();
-    }
+void Entity::run() {
+    sent();
+    stack.run();
+    send();
+}
 
-    void sent() {
-        //calculate what sent becomes
-        //give it off to stacker
-    }
+void Entity::sent() {
 
-    void send() {
-        //take the clears from stacker, add them into attack lines
-    }
-};
+}
+
+void Entity::send() {
+
+}

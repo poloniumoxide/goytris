@@ -1,0 +1,24 @@
+#ifndef MINOSET_H
+#define MINOSET_H
+
+#include "mino.h"
+
+#include <algorithm>
+#include <vector>
+
+using namespace std;
+
+class MinoSet {
+public:
+	vector<Mino> minos;
+    int cx; //NOTE: ROTATION CENTER VALUES HERE ARE DOUBLE cuz i dont wanna deal with floats
+    int cy;
+    int type;
+
+    MinoSet(vector<vector<int>> = {{}}, int = 0, int = 0, int = 0);
+
+    void move(int = 0, int = 0, int = 0);
+
+};
+
+#endif // MY_HEADER_H

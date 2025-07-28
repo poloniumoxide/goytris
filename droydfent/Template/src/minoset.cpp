@@ -1,20 +1,14 @@
-#include "mino.cpp"
-
-
-#include <algorithm>
-#include <vector>
+#include "minoset.h"
 
 using namespace std;
 
-class MinoSet {
-public:
 
     vector<Mino> minos;
     int cx; //NOTE: ROTATION CENTER VALUES HERE ARE DOUBLE cuz i dont wanna deal with floats
     int cy;
     int type;
 
-    MinoSet(vector<vector<int>> minos_, int cx_, int cy_, int type_) {
+    MinoSet::MinoSet(vector<vector<int>> minos_, int cx_, int cy_, int type_) {
         cx = cx_;
         cy = cy_;
         for (auto x : minos_) {
@@ -24,7 +18,7 @@ public:
     }
 
 
-    void move(int dx = 0, int dy = 0, int dtheta = 0) {
+    void MinoSet::move(int dx, int dy, int dtheta) {
         for (auto m : minos) {
             m.x += dx; m.y += dy;
         }
@@ -38,5 +32,3 @@ public:
             }
         }
     }
-
-};

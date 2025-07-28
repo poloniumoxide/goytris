@@ -1,21 +1,9 @@
-class Mino {
-public:
+#include "mino.h"
 
-    int x, y;
-    int type;
-    // 0 = empty
-    // 1 = shadow
-    //
-    //
-    //
-    // 10-16: filled minos
-    bool live;
-    bool shadow;
+using namespace std;
 
-    Mino(int x_, int y_, int type_ = 0) {
+    Mino::Mino(int x_, int y_, int type_) {
         x = x_;
         y = y_;
         type = type_;
     }
-
-};
