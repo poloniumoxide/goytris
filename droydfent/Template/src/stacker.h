@@ -4,7 +4,7 @@
 #include "controller.h"
 #include "bag.h"
 #include "minoset.h"
-#include "defaultdata.h"
+#include "jsonparser.h"
 #include "force.h"
 #include "mino.h"
 

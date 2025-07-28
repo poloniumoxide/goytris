@@ -1,7 +1,5 @@
 #include "minoset.h"
 
-using namespace std;
-
 
     vector<Mino> minos;
     int cx; //NOTE: ROTATION CENTER VALUES HERE ARE DOUBLE cuz i dont wanna deal with floats

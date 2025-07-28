@@ -1,7 +1,5 @@
 #include "bag.h"
 
-using namespace std;
-
     int size;
     vector<int> bag;
     vector<int> tbag;
@@ -24,7 +22,7 @@ using namespace std;
             it = 0;
         }
         it++;
-
-        MinoSet an(tetrominos[tbag[it-1]], xi, yi, it-1+10);
+        
+        MinoSet an(D["tetrominos"][tbag[it-1]], xi, yi, it-1+10);
         return an;
     }
