@@ -6,15 +6,17 @@
 #include <fstream>
 #include <string>
 #include <streambuf>
+#include <iostream>
 
 using namespace std;
 
 using json = nlohmann::json;
 
 
-inline ifstream temp("defaultdata.json");
-inline string rawdata((istreambuf_iterator<char>(temp)),
-                 istreambuf_iterator<char>());
-inline json D{json::parse(rawdata)};
+inline ifstream temp("/Users/ericyang/Desktop/goytris/droydfent/Template/src/defaultdata.json");
+
+inline json D{json::parse(temp)};
+
+
 
 #endif 

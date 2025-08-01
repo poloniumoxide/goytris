@@ -6,10 +6,14 @@
         for (int i = 0; i < D["board"]["height"]; i++) {
             for (int j = 0; j < D["board"]["width"]; j++) {
                 Mino m(j, i);
-                board[j][i] = m;
+                board[i][j] = m;
             }
         }
+
+        Texture2D minoskin1 = LoadTexture("assets/GlassMaster.png");
+
     }
+    
     
     void Stacker::run() {
         if (turn <= 0) return; //turn based
@@ -17,7 +21,6 @@
         getCommands();
         //run gravity
         //print onto board
-        draw();
     }
 
     bool Stacker::fit(MinoSet t, int dx, int dy, int dtheta) {
@@ -112,6 +115,7 @@
 
     void Stacker::softdrop(int v) {
         int final = 0;
+        v=-v;
         for (int i = 0; i < abs(v); i += v/abs(v)) {
             if (!fit(tetro, 0, i)) {
                 break;
@@ -121,6 +125,18 @@
         tetro.move(0, final);
     }
 
-    void Stacker::draw() {
-        //how?
+    void Stacker::draw(int x, int y, int sz) {
+        //temporary; should use assets later
+        DrawRectangleLines(x, y, (int)D["board"]["width"]*sz, (int)D["board"]["height"]*sz, WHITE);
+        for (int i = 0; i < D["board"]["height"]; i++) {
+            for (int j = 0; j < D["board"]["width"]; j++) {
+                int col = board[i][j].type - 10;
+                Rectangle source = {0, (float)(0+i*minoskin1.width/12), (float)(minoskin1.width/12), (float)(minoskin1.height)};
+                Rectangle dest = {(float)(x+sz*j), (float)(y+sz*i), (float)sz, (float)sz};
+                Vector2 empty = {0, 0};
+                DrawTexturePro(minoskin1, source, dest, empty, 0, WHITE);
+            }
+        }
+
     }
+    

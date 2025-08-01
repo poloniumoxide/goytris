@@ -8,6 +8,9 @@
 #include "force.h"
 #include "mino.h"
 
+#include <raylib.h>
+#include <raymath.h>
+
 #include <vector>
 #include <cstdlib>
 
@@ -21,10 +24,14 @@ public:
     Bag bag;
     MinoSet tetro;
     int xi, yi;
-    bool active = false; //active tetromino?
+    bool active; //active tetromino?
     int turn;
 
+    Texture2D minoskin1;
+
     Stacker();
+
+    
     
     void run();
     bool fit(MinoSet, int = 0, int = 0, int = 0);
@@ -36,7 +43,8 @@ public:
     void harddrop();
     void lock();
     void softdrop(int);
-    void draw();
+    void draw(int, int, int);
+
 
 };
 

@@ -1,11 +1,6 @@
 #include "minoset.h"
 
 
-    vector<Mino> minos;
-    int cx; //NOTE: ROTATION CENTER VALUES HERE ARE DOUBLE cuz i dont wanna deal with floats
-    int cy;
-    int type;
-
     MinoSet::MinoSet(vector<vector<int>> minos_, int cx_, int cy_, int type_) {
         cx = cx_;
         cy = cy_;
