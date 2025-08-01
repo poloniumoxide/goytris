@@ -21,6 +21,7 @@ public:
     void run();
     void send();
     void sent();
+    void draw();
 };
 
 #endif // MY_HEADER_H

@@ -15,7 +15,7 @@ public:
     int cy;
     int type;
 
-    MinoSet(vector<vector<int>> = {{}}, int = 0, int = 0, int = 0);
+    MinoSet(vector<vector<int>> = {{0, 0}}, int = 0, int = 0, int = 0);
 
     void move(int = 0, int = 0, int = 0);
 
