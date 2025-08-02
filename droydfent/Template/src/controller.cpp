@@ -33,40 +33,40 @@
         for (int i = 0; i < order.size(); i ++) {
             checkheld(order[i], i);
         }
-        if (held[kleft] >= D["handling"]["das"]) {
-            int p = held[kleft]-(int)D["handling"]["das"];
+        if (held[0] >= D["handling"]["das"]) {
+            int p = held[0]-(int)D["handling"]["das"];
             if (p%(int)D["handling"]["arr"] == 0) {
                 inputs.push_back(2);
             }
         }
-        if (held[kright] >= D["handling"]["das"]) {
-            int p = held[kright]-(int)D["handling"]["das"];
+        if (held[1] >= D["handling"]["das"]) {
+            int p = held[1]-(int)D["handling"]["das"];
             if (p%(int)D["handling"]["arr"] == 0) {
                 inputs.push_back(3);
             }
         }
-        if (held[kcw] == 1) {
+        if (held[2] == 1) {
             inputs.push_back(6);
         }
-        if (held[kccw] == 1) {
+        if (held[3] == 1) {
             inputs.push_back(8);
         }
-        if (held[k180] == 1) {
+        if (held[4] == 1) {
             inputs.push_back(7);
         }
-        if (held[khold] == 1) {
+        if (held[5] == 1) {
             inputs.push_back(9);
         }
-        if (held[ksd] > 0) {
+        if (held[6] > 0) {
             if ((int)D["handling"]["sdf"] == 0) {
                 for (int i = 0; i < 40; i++) {
                     inputs.push_back(1);
                 }
-            } else if (held[ksd]%(int)D["handling"]["sdf"] == 0) {
+            } else if (held[6]%(int)D["handling"]["sdf"] == 0) {
                 inputs.push_back(1);
             }
         }
-        if (held[khd] == 1) {
+        if (held[7] == 1) {
             inputs.push_back(0);
         }
 

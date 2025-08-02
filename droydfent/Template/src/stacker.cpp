@@ -2,14 +2,14 @@
 
     Stacker::Stacker(){
         vector<Mino> row(D["board"]["width"]);
-        vector<vector<Mino>> board(D["board"]["height"], row);
+        vector<vector<Mino>> board_(D["board"]["height"], row);
         for (int i = 0; i < D["board"]["height"]; i++) {
             for (int j = 0; j < D["board"]["width"]; j++) {
-                Mino m(j, i);
-                board[i][j] = m;
+                Mino m(j, i, 0);
+                board_[i][j] = m;
             }
         }
-
+        board = board_;
         Texture2D minoskin1 = LoadTexture("assets/GlassMaster.png");
 
     }
@@ -130,7 +130,7 @@
         DrawRectangleLines(x, y, (int)D["board"]["width"]*sz, (int)D["board"]["height"]*sz, WHITE);
         for (int i = 0; i < D["board"]["height"]; i++) {
             for (int j = 0; j < D["board"]["width"]; j++) {
-                int col = board[i][j].type - 10;
+                int col = board[i][j].type;
                 Rectangle source = {0, (float)(0+i*minoskin1.width/12), (float)(minoskin1.width/12), (float)(minoskin1.height)};
                 Rectangle dest = {(float)(x+sz*j), (float)(y+sz*i), (float)sz, (float)sz};
                 Vector2 empty = {0, 0};

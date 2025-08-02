@@ -20,6 +20,7 @@ class Stacker {
 public:
 
     vector<vector<Mino>> board;
+    
     Controller control;
     Bag bag;
     MinoSet tetro;
