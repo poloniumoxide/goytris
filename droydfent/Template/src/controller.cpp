@@ -33,11 +33,17 @@
         for (int i = 0; i < order.size(); i ++) {
             checkheld(order[i], i);
         }
+        if (held[0] == 1) {
+            inputs.push_back(2);
+        }
         if (held[0] >= D["handling"]["das"]) {
             int p = held[0]-(int)D["handling"]["das"];
             if (p%(int)D["handling"]["arr"] == 0) {
                 inputs.push_back(2);
             }
+        }
+        if (held[1] == 1) {
+            inputs.push_back(3);
         }
         if (held[1] >= D["handling"]["das"]) {
             int p = held[1]-(int)D["handling"]["das"];

@@ -20,5 +20,5 @@ void Entity::send() {
 }
 
 void Entity::draw() {
-    stack.draw(0, 0, 15);
+    stack.draw(300, -500, 32);
 }

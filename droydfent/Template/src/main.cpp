@@ -15,14 +15,19 @@
 using namespace std;
 using json = nlohmann::json;
 
+double TFPS = 60;
+double FRAME = (1.0F)/TFPS;
+
+
 int main()
 {
 	InitWindow(1000, 1000, "george droyd's fentanyl");
-	cout << "v1" << endl;
 
 	ChangeDirectory(GetApplicationDirectory());
 
 	cout << GetWorkingDirectory() << endl;
+
+	//SetTargetFPS(60);
 	
     //GetWorkingDirectory();
 	
@@ -41,7 +46,6 @@ int main()
 
 */	
 	Entity thegoy = Entity();
-	cout << "v2" << endl;
 
 	while (!WindowShouldClose()) {
         	BeginDrawing();
@@ -50,6 +54,10 @@ int main()
             	thegoy.run();
     
         	EndDrawing();
+        	float temp = GetFrameTime();
+        	if (temp < FRAME){
+        		WaitTime(FRAME-temp);
+        	}
     	}
    	 CloseWindow();
    	 return 0;

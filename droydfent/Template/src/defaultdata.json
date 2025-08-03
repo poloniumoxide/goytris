@@ -1,14 +1,14 @@
 {
 	"board" : {
 		"height" : 40,
-		"width" : 20,
-		"xi" : 0,
-		"yi" : 0
+		"width" : 10,
+		"xi" : 3,
+		"yi" : 19
 	},
 	"handling" : {
-		"das" : 6,
-		"arr" : 1,
-		"sdf" : 1
+		"das" : 10,
+		"arr" : 2,
+		"sdf" : 2
 	},
 	"keybinds" : {
 		"kleft" : "KEY_LEFT",
