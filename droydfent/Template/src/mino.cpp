@@ -5,3 +5,8 @@
         y = y_;
         type = type_;
     }
+
+    void Mino::move(int dx, int dy) {
+        x = x + dx;
+        y = y + dy;
+    }

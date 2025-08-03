@@ -13,7 +13,7 @@
         default_random_engine rngesus(rng());
     }
 
-    MinoSet Bag::next(int xi, int yi) {
+    MinoSet Bag::next() {
         if (it == bag.size()-1) {
             for (auto x : bag) {
                 tbag.push_back(x);
@@ -22,7 +22,7 @@
             it = 0;
         }
         it++;
-        
-        MinoSet an(D["tetrominos"][tbag[it-1]], xi, yi, it-1+10);
+
+        MinoSet an(D["tetrominos"][tbag[it-1]], D["board"]["xi"], D["board"]["yi"], tbag[it-1]+10);
         return an;
     }

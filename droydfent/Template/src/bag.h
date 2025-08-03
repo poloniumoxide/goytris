@@ -21,7 +21,7 @@ public:
 
     Bag(vector<int> = {0, 1, 2, 3, 4, 5, 6});
 
-    MinoSet next(int = 0, int = 0);
+    MinoSet next();
 
 };
 

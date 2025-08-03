@@ -2,6 +2,7 @@
 #define MINO_H
 
 #include <vector>
+#include <iostream>
 
 using namespace std;
 
@@ -20,6 +21,7 @@ public:
 
     Mino(int = 0, int = 0, int = 0);
 
+    void move(int = 0, int = 0);
 };
 
 #endif // MY_HEADER_H
