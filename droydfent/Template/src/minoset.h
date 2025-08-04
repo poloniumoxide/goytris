@@ -15,10 +15,16 @@ public:
     int cx; //NOTE: ROTATION CENTER VALUES HERE ARE DOUBLE cuz i dont wanna deal with floats
     int cy;
     int type;
+    int ox;
+    int oy;
+    int neutralx;
+    int neutraly;
+    int rotation;
 
-    MinoSet(vector<vector<int>> = {{0, 0}}, int = 0, int = 0, int = 0);
+    MinoSet(vector<vector<int>> = {{0, 0}}, int = 0, int = 0, int = 0, int = 0, int = 0);
 
     void move(int = 0, int = 0, int = 0);
+    void reset();
 
 };
 

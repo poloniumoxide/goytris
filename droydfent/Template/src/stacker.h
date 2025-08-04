@@ -13,6 +13,7 @@
 
 #include <vector>
 #include <cstdlib>
+#include <algorithm>
 
 using namespace std;
 
@@ -20,10 +21,11 @@ class Stacker {
 public:
 
     vector<vector<Mino>> board;
-    
+
     Controller control;
     Bag bag;
     MinoSet tetro;
+    MinoSet held;
     int xi, yi;
     bool active; //active tetromino?
     int turn;
@@ -31,14 +33,13 @@ public:
     Texture2D minoskin1;
 
     Stacker();
-
-    
     
     void run();
     bool fit(MinoSet, int = 0, int = 0, int = 0);
     bool fit(Mino, int = 0, int = 0);
     void spawn();
     void getCommands();
+    void hold();
     void move(int);
     void spin(int);
     void harddrop();

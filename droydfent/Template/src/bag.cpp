@@ -1,20 +1,20 @@
 #include "bag.h"
 
-    int size;
-    vector<int> bag;
-    vector<int> tbag;
-    int it = 0;
-    default_random_engine rngesus;
 
-    Bag::Bag(vector<int> bag_) {
+    Bag::Bag(vector<int> bag_, int seed_) {
         bag=bag_;
         it=bag.size()-1;
-        random_device rng;
-        default_random_engine rngesus(rng());
+        seed = seed_;
+        if (seed == 271000) {
+            seed = chrono::system_clock::now().time_since_epoch().count();
+        }
+        mt19937 rngesus_(seed);
+        rngesus = rngesus_;
     }
 
     MinoSet Bag::next() {
         if (it == bag.size()-1) {
+            tbag.clear();
             for (auto x : bag) {
                 tbag.push_back(x);
             }
@@ -23,6 +23,6 @@
         }
         it++;
 
-        MinoSet an(D["tetrominos"][tbag[it-1]], D["board"]["xi"], D["board"]["yi"], tbag[it-1]+10);
+        MinoSet an(D["tetrominos"][tbag[it-1]], D["board"]["xi"], D["board"]["yi"], tbag[it-1]+10, D["tetrominoscenter"][tbag[it-1]][0], D["tetrominoscenter"][tbag[it-1]][1]);
         return an;
     }

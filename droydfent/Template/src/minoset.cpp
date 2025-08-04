@@ -1,12 +1,17 @@
 #include "minoset.h"
 
 
-    MinoSet::MinoSet(vector<vector<int>> minos_, int cx_, int cy_, int type_) {
-        cx = cx_;
+    MinoSet::MinoSet(vector<vector<int>> minos_, int cx_, int cy_, int type_, int ox_, int oy_) {
+        cx = cx_;  //note: doubled
         cy = cy_;
-        type=type_;
+        ox = ox_;  //offset from cx where the physical rotation center is
+        oy = oy_;
+        neutralx = cx;
+        neutraly = cy;
+        rotation = 0;
+        type = type_;
         for (auto x : minos_) {
-            minos.push_back(Mino(x[0]+cx, x[1]+cy, type));
+            minos.push_back(Mino(x[0]+cx, -x[1]+cy, type));
         }
     }
 
@@ -16,12 +21,21 @@
             minos[i].move(dx, dy);
         }
         cx += dx; cy += dy;
+        rotation += dtheta; rotation %= 4;
+        //cout << cx << " " << cy << endl;
         for (int i = 0; i < (dtheta % 4); i++) {
             //rotate 90 degrees about cx,cy
-            for (auto m : minos) {
-                int px = m.x - cy; int py = m.y - cy;
+            for (int i = 0; i < minos.size(); i++) {
+                int tx = 2 * cx + ox;    int ty = 2 * cy + oy;
+                int mx = 2 * minos[i].x; int my = 2 * minos[i].y;
+                int px = mx - tx; int py = my - ty;
                 int npx = py; int npy = -px;
-                m.x = cx + npx; m.y = cy + npy;
+                minos[i].x = (tx + npx) / 2;
+                minos[i].y = (ty + npy) / 2;
             }
         }
+    }
+
+    void MinoSet::reset() {
+        move(neutralx-cx, neutraly-cy, 4-rotation);
     }
