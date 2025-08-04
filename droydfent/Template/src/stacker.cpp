@@ -118,11 +118,32 @@
         tetro.move(final);
     }
 
+
     void Stacker::spin(int v) {
-        if (!fit(tetro, 0, 0, v)) {
+        if (fit(tetro, 0, 0, v)) {
+            tetro.move(0, 0, v);
             return;
         }
-        tetro.move(0, 0, v);
+        
+        int table = 0;
+        if (tetro.type-10 == 0) table = 1; //use special table for i pieces
+
+        for (int i = 0; i < D["srskicks"][table].size(); i++) {
+
+            tetro.rotation %= 4;
+
+            vector<int> cur = D["srskicks"][table][tetro.rotation%4][i];
+
+            vector<int> fin = D["srskicks"][table][(tetro.rotation+v)%4][i];
+
+            vector<int> dif = {cur[0] - fin[0], cur[1] - fin[1]};
+
+            if (fit(tetro, dif[0], dif[1], v)) {
+                tetro.move(dif[0], dif[1], v);
+                return;
+            }
+        }
+        
     }
 
     void Stacker::harddrop() {
@@ -152,7 +173,6 @@
     int Stacker::softdrop(int v) {
         int final = 0;
         for (int i = 0; i <= abs(v); i += v/abs(v)) {
-            cout << "yap" << endl;
             if (!fit(tetro, 0, i)) {
                 break;
             }
