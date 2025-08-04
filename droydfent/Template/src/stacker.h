@@ -46,7 +46,7 @@ public:
     void spin(int);
     void harddrop();
     void lock();
-    void softdrop(int);
+    int softdrop(int);
     void clear();
     void draw(int, int, int);
 

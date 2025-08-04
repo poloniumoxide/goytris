@@ -15,13 +15,13 @@
 using namespace std;
 using json = nlohmann::json;
 
-double TFPS = 60;
+double TFPS = (double)D["game"]["fps"];
 double FRAME = (1.0F)/TFPS;
 
 
 int main()
 {
-	InitWindow(1000, 1000, "george droyd's fentanyl");
+	InitWindow(1000, 1000, "stacka");
 
 	ChangeDirectory(GetApplicationDirectory());
 

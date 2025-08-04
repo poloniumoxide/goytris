@@ -149,15 +149,17 @@
         clear();
     }
 
-    void Stacker::softdrop(int v) {
+    int Stacker::softdrop(int v) {
         int final = 0;
         for (int i = 0; i <= abs(v); i += v/abs(v)) {
+            cout << "yap" << endl;
             if (!fit(tetro, 0, i)) {
                 break;
             }
             final = i;
         }
         tetro.move(0, final);
+        return final;
     }
 
     void Stacker::clear() { //call this whenever the board is modified
@@ -191,7 +193,6 @@
         for (int i = 0; i < clr.size(); i++) {
             while (itr < clr[i]) {
                 swap(board[itr], board[itr-i]); //any swap lovers in chat
-                cout << "SWAPPEDNIGE" << endl;
                 itr++;
             }
             itr++;
@@ -225,6 +226,20 @@
 
         if (active) {
 
+            int dist = softdrop(-271000);
+
+            for (Mino m : tetro.minos) {
+                //cout << m.x << "OLD" << m.y << endl;
+                int ti = (int)D["board"]["height"] - m.y - 1;
+                int col = m.type - 10;
+                Rectangle source = {(float)col*(float)minoskin1.width/12.0f, 0, (float)(minoskin1.width/12), (float)(minoskin1.height)};
+                Rectangle dest = {(float)(x+sz*m.x), (float)(y+sz*ti), (float)sz, (float)sz};
+                Vector2 empty = {0, 0};
+                DrawTexturePro(minoskin1, source, dest, empty, 0, DARKGRAY);
+            }
+            
+            tetro.move(0, -dist);
+
             for (Mino m : tetro.minos) {
                 //cout << m.x << "OLD" << m.y << endl;
                 int ti = (int)D["board"]["height"] - m.y - 1;
@@ -247,6 +262,8 @@
             mx += 0.5; my += 0.5;
 
             DrawRectangle(x + (mx*sz) - sz/8, y + (my*sz) - sz/8, sz/4, sz/4, BLUE);
+
+            //draw shadows
 
         }
 

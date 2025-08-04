@@ -6,6 +6,9 @@
 		"yi" : 19,
 		"preview" : 5
 	},
+	"game" : {
+		"fps" : 60 
+	},
 	"handling" : {
 		"das" : 10,
 		"arr" : 2,
