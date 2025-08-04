@@ -39,7 +39,7 @@ public:
     bool fit(Mino, int = 0, int = 0);
     void spawn();
     void getCommands();
-    //void hold();
+    void hold();
     void move(int);
     void spin(int);
     void harddrop();

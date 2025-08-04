@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <random>
 #include <vector>
+#include <chrono>
 
 using namespace std;
 
@@ -17,9 +18,10 @@ public:
     vector<int> bag;
     vector<int> tbag;
     int it = 0;
-    default_random_engine rngesus;
+    int seed;
+    mt19937 rngesus;
 
-    Bag(vector<int> = {0, 1, 2, 3, 4, 5, 6});
+    Bag(vector<int> = {0, 1, 2, 3, 4, 5, 6}, int = 271000);
 
     MinoSet next();
 

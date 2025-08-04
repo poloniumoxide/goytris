@@ -17,10 +17,14 @@ public:
     int type;
     int ox;
     int oy;
+    int neutralx;
+    int neutraly;
+    int rotation;
 
     MinoSet(vector<vector<int>> = {{0, 0}}, int = 0, int = 0, int = 0, int = 0, int = 0);
 
     void move(int = 0, int = 0, int = 0);
+    void reset();
 
 };
 

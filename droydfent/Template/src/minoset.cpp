@@ -6,6 +6,9 @@
         cy = cy_;
         ox = ox_;  //offset from cx where the physical rotation center is
         oy = oy_;
+        neutralx = cx;
+        neutraly = cy;
+        rotation = 0;
         type = type_;
         for (auto x : minos_) {
             minos.push_back(Mino(x[0]+cx, -x[1]+cy, type));
@@ -18,6 +21,7 @@
             minos[i].move(dx, dy);
         }
         cx += dx; cy += dy;
+        rotation += dtheta; rotation %= 4;
         //cout << cx << " " << cy << endl;
         for (int i = 0; i < (dtheta % 4); i++) {
             //rotate 90 degrees about cx,cy
@@ -30,4 +34,8 @@
                 minos[i].y = (ty + npy) / 2;
             }
         }
+    }
+
+    void MinoSet::reset() {
+        move(neutralx-cx, neutraly-cy, 4-rotation);
     }
