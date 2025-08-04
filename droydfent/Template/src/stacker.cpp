@@ -55,7 +55,7 @@
             if (t == 0) {  
                 harddrop();
             } else if (t == 1) {
-                softdrop(1);
+                softdrop(-1);
             } else if (t == 2) {
                 move(-1);  //forgor if this is left or right
             } else if (t == 3) {
@@ -66,10 +66,12 @@
                 move(1);
             } else if (t == 6) {
                 spin(1);    //forgor which dir
-            } else if(t==7) {
+            } else if (t == 7) {
                 spin(2);    //180
-            } else if (t==8) {
+            } else if (t == 8) {
                 spin(3);    
+            } else if (t == 9) {
+                //hold();
             }
 
             break;
@@ -77,6 +79,15 @@
             t = control.next();
         }
     }
+    /*
+    void Stacker::hold() {
+        if (held.minos.size() == 0) {
+            held = tetro;
+        } else {
+            swap(held, tetro);
+        }
+        active = false;
+    }*/
 
     void Stacker::move(int v) {
         int final = 0;
@@ -98,7 +109,7 @@
 
     void Stacker::harddrop() {
         int final = 0;
-        int v = 271000;
+        int v = -271000;
         for (int i = 0; i < abs(v); i += v/abs(v)) {
             if (!fit(tetro, 0, i)) {
                 break;
@@ -119,7 +130,6 @@
     }
 
     void Stacker::softdrop(int v) {
-        cout << "im sding rn" << endl;
         int final = 0;
         for (int i = 0; i <= abs(v); i += v/abs(v)) {
             if (!fit(tetro, 0, i)) {
@@ -137,10 +147,12 @@
         for (int i = 0; i < D["board"]["height"]; i++) {
             for (int j = 0; j < D["board"]["width"]; j++) {
 
+                int ti = (int)D["board"]["height"] - i - 1;
+
                 int col = board[i][j].type - 10;
                 if (col < 0) continue;
-                Rectangle source = {0, (float)(0+i*minoskin1.width/12), (float)(minoskin1.width/12), (float)(minoskin1.height)};
-                Rectangle dest = {(float)(x+sz*j), (float)(y+sz*i), (float)sz, (float)sz};
+                Rectangle source = {(float)col*(float)minoskin1.width/12.0f, 0, (float)(minoskin1.width/12), (float)(minoskin1.height)};
+                Rectangle dest = {(float)(x+sz*j), (float)(y+sz*ti), (float)sz, (float)sz};
                 Vector2 empty = {0, 0};
                 DrawTexturePro(minoskin1, source, dest, empty, 0, WHITE);
             }
@@ -152,13 +164,27 @@
 
         for (Mino m : tetro.minos) {
             //cout << m.x << "OLD" << m.y << endl;
+            int ti = (int)D["board"]["height"] - m.y - 1;
             int col = m.type - 10;
-            Rectangle source = {0, (float)(0+m.y*minoskin1.width/12), (float)(minoskin1.width/12), (float)(minoskin1.height)};
-            Rectangle dest = {(float)(x+sz*m.x), (float)(y+sz*m.y), (float)sz, (float)sz};
+            cout << col << endl;
+            Rectangle source = {(float)col*(float)minoskin1.width/12.0f, 0, (float)(minoskin1.width/12), (float)(minoskin1.height)};
+            Rectangle dest = {(float)(x+sz*m.x), (float)(y+sz*ti), (float)sz, (float)sz};
             Vector2 empty = {0, 0};
             DrawTexturePro(minoskin1, source, dest, empty, 0, WHITE);
         }
 
+        //rotation centers
+
+        float mx = tetro.cx * 2 + tetro.ox;
+        float tmy =(tetro.cy * 2 + tetro.oy);
+
+        mx /= 2; tmy /= 2;
+
+        float my = (float)D["board"]["height"] - tmy - 1;
+
+        mx += 0.5; my += 0.5;
+
+        DrawRectangle(x + (mx*sz) - sz/8, y + (my*sz) - sz/8, sz/4, sz/4, BLUE);
 
     }
     

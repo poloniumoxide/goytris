@@ -23,6 +23,6 @@
         }
         it++;
 
-        MinoSet an(D["tetrominos"][tbag[it-1]], D["board"]["xi"], D["board"]["yi"], tbag[it-1]+10);
+        MinoSet an(D["tetrominos"][tbag[it-1]], D["board"]["xi"], D["board"]["yi"], tbag[it-1]+10, D["tetrominoscenter"][tbag[it-1]][0], D["tetrominoscenter"][tbag[it-1]][1]);
         return an;
     }
