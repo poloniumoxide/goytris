@@ -22,11 +22,13 @@
         if (turn <= 0) return; //turn based
         spawn();
         getCommands();
+        
         //run gravity
         //print onto board
     }
 
     bool Stacker::fit(MinoSet t, int dx, int dy, int dtheta) {
+    
         bool isgoy = false;
         t.move(dx, dy, dtheta);
         for (auto x : t.minos) {
@@ -34,13 +36,25 @@
         }
         t.move(-dx, -dy, (4-dtheta)%4);
         return !isgoy;
+    
     }
 
     bool Stacker::fit(Mino t, int dx, int dy) {
+    
         if ((t.x+dx < 0) | (t.x+dx >= D["board"]["width"]) | (t.y+dy < 0) | (t.y+dy >= D["board"]["height"])) {
             return false;
         }
         return (board[t.y + dy][t.x + dx].type <= 1);
+    
+    }
+
+    bool Stacker::fit(int x, int y) {
+        
+        if ((x < 0) | (x >= D["board"]["width"]) | (y < 0) | (y >= D["board"]["height"])) {
+            return false;
+        }
+        return (board[y][x].type <= 1);
+    
     }
 
     void Stacker::spawn() {
@@ -104,11 +118,32 @@
         tetro.move(final);
     }
 
+
     void Stacker::spin(int v) {
-        if (!fit(tetro, 0, 0, v)) {
+        if (fit(tetro, 0, 0, v)) {
+            tetro.move(0, 0, v);
             return;
         }
-        tetro.move(0, 0, v);
+        
+        int table = 0;
+        if (tetro.type-10 == 0) table = 1; //use special table for i pieces
+
+        for (int i = 0; i < D["srskicks"][table].size(); i++) {
+
+            tetro.rotation %= 4;
+
+            vector<int> cur = D["srskicks"][table][tetro.rotation%4][i];
+
+            vector<int> fin = D["srskicks"][table][(tetro.rotation+v)%4][i];
+
+            vector<int> dif = {cur[0] - fin[0], cur[1] - fin[1]};
+
+            if (fit(tetro, dif[0], dif[1], v)) {
+                tetro.move(dif[0], dif[1], v);
+                return;
+            }
+        }
+        
     }
 
     void Stacker::harddrop() {
@@ -131,9 +166,11 @@
         }
 
         active = false;
+
+        clear();
     }
 
-    void Stacker::softdrop(int v) {
+    int Stacker::softdrop(int v) {
         int final = 0;
         for (int i = 0; i <= abs(v); i += v/abs(v)) {
             if (!fit(tetro, 0, i)) {
@@ -142,8 +179,51 @@
             final = i;
         }
         tetro.move(0, final);
+        return final;
     }
 
+    void Stacker::clear() { //call this whenever the board is modified
+        int final = 0;
+        bool pc = true;
+
+        vector<int> clr(0);
+
+        for (int i = 0; i < D["board"]["height"]; i++) {
+            bool rowfull = true;
+            for (int j = 0; j < D["board"]["width"]; j++) {
+                if (fit(j, i)) {
+                    rowfull = false;
+                    pc = false;
+                    break;
+                }
+            }
+            if (rowfull) {
+                clr.push_back(i);
+                for (int j = 0; j < D["board"]["width"]; j++) {  //remove the blocks
+                    Mino m(j, i, 0);
+                    board[i][j] = m;
+                }
+            }
+        }
+
+        //shift it down
+
+        int itr = 0;
+
+        for (int i = 0; i < clr.size(); i++) {
+            while (itr < clr[i]) {
+                swap(board[itr], board[itr-i]); //any swap lovers in chat
+                itr++;
+            }
+            itr++;
+        }
+
+        while (itr < D["board"]["height"]) {
+            swap(board[itr], board[itr-clr.size()]);
+            itr++;
+        }
+
+    }
 
     void Stacker::draw(int x, int y, int sz) {
         //temporary; should use assets later
@@ -166,11 +246,24 @@
 
         if (active) {
 
+            int dist = softdrop(-271000);
+
             for (Mino m : tetro.minos) {
                 //cout << m.x << "OLD" << m.y << endl;
                 int ti = (int)D["board"]["height"] - m.y - 1;
                 int col = m.type - 10;
-                cout << col << endl;
+                Rectangle source = {(float)col*(float)minoskin1.width/12.0f, 0, (float)(minoskin1.width/12), (float)(minoskin1.height)};
+                Rectangle dest = {(float)(x+sz*m.x), (float)(y+sz*ti), (float)sz, (float)sz};
+                Vector2 empty = {0, 0};
+                DrawTexturePro(minoskin1, source, dest, empty, 0, DARKGRAY);
+            }
+            
+            tetro.move(0, -dist);
+
+            for (Mino m : tetro.minos) {
+                //cout << m.x << "OLD" << m.y << endl;
+                int ti = (int)D["board"]["height"] - m.y - 1;
+                int col = m.type - 10;
                 Rectangle source = {(float)col*(float)minoskin1.width/12.0f, 0, (float)(minoskin1.width/12), (float)(minoskin1.height)};
                 Rectangle dest = {(float)(x+sz*m.x), (float)(y+sz*ti), (float)sz, (float)sz};
                 Vector2 empty = {0, 0};
@@ -190,6 +283,8 @@
 
             DrawRectangle(x + (mx*sz) - sz/8, y + (my*sz) - sz/8, sz/4, sz/4, BLUE);
 
+            //draw shadows
+
         }
 
         
@@ -199,11 +294,25 @@
             for (Mino m : held.minos) {
                 int col = m.type - 10;
                 Rectangle source = {(float)col*(float)minoskin1.width/12.0f, 0, (float)(minoskin1.width/12), (float)(minoskin1.height)};
-                Rectangle dest = {(float)(x-(sz*(8-m.x))), (float)(y + sz*(35-m.y)), (float)sz, (float)sz};
+                Rectangle dest = {(float)(x-(sz*(8-m.x))), (float)(y + sz*(36-m.y)), (float)sz, (float)sz};
                 Vector2 empty = {0, 0};
                 DrawTexturePro(minoskin1, source, dest, empty, 0, WHITE);
             }
         }
+
+        //draw preview
+
+        for (int i = 0; i < (int)D["board"]["preview"]; i++) {
+            auto temp = bag.view(i);
+            for (Mino m : temp.minos) {
+                int col = m.type - 10;
+                Rectangle source = {(float)col*(float)minoskin1.width/12.0f, 0, (float)(minoskin1.width/12), (float)(minoskin1.height)};
+                Rectangle dest = {(float)(x+(sz*((int)D["board"]["width"]+m.x-2))), (float)(y + sz*(36-m.y+(4*i))), (float)sz, (float)sz};
+                Vector2 empty = {0, 0};
+                DrawTexturePro(minoskin1, source, dest, empty, 0, WHITE);
+            }
+        }
+
 
     }
     

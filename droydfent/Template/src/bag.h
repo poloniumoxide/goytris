@@ -8,6 +8,7 @@
 #include <random>
 #include <vector>
 #include <chrono>
+#include <deque>
 
 using namespace std;
 
@@ -16,7 +17,7 @@ public:
 
 	int size;
     vector<int> bag;
-    vector<int> tbag;
+    deque<int> tbag;
     int it = 0;
     int seed;
     mt19937 rngesus;
@@ -24,6 +25,8 @@ public:
     Bag(vector<int> = {0, 1, 2, 3, 4, 5, 6}, int = 271000);
 
     MinoSet next();
+    void addbag(int = 1);
+    MinoSet view(int = 0);
 
 };
 

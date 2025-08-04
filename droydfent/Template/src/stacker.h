@@ -29,6 +29,7 @@ public:
     int xi, yi;
     bool active; //active tetromino?
     int turn;
+    vector<vector<int>> clears;
 
     Texture2D minoskin1;
 
@@ -37,6 +38,7 @@ public:
     void run();
     bool fit(MinoSet, int = 0, int = 0, int = 0);
     bool fit(Mino, int = 0, int = 0);
+    bool fit(int = 0, int = 0);
     void spawn();
     void getCommands();
     void hold();
@@ -44,7 +46,8 @@ public:
     void spin(int);
     void harddrop();
     void lock();
-    void softdrop(int);
+    int softdrop(int);
+    void clear();
     void draw(int, int, int);
 
 
