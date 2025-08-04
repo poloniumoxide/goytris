@@ -199,11 +199,25 @@
             for (Mino m : held.minos) {
                 int col = m.type - 10;
                 Rectangle source = {(float)col*(float)minoskin1.width/12.0f, 0, (float)(minoskin1.width/12), (float)(minoskin1.height)};
-                Rectangle dest = {(float)(x-(sz*(8-m.x))), (float)(y + sz*(35-m.y)), (float)sz, (float)sz};
+                Rectangle dest = {(float)(x-(sz*(8-m.x))), (float)(y + sz*(36-m.y)), (float)sz, (float)sz};
                 Vector2 empty = {0, 0};
                 DrawTexturePro(minoskin1, source, dest, empty, 0, WHITE);
             }
         }
+
+        //draw preview
+
+        for (int i = 0; i < (int)D["board"]["preview"]; i++) {
+            auto temp = bag.view(i);
+            for (Mino m : temp.minos) {
+                int col = m.type - 10;
+                Rectangle source = {(float)col*(float)minoskin1.width/12.0f, 0, (float)(minoskin1.width/12), (float)(minoskin1.height)};
+                Rectangle dest = {(float)(x+(sz*((int)D["board"]["width"]+m.x-2))), (float)(y + sz*(36-m.y+(4*i))), (float)sz, (float)sz};
+                Vector2 empty = {0, 0};
+                DrawTexturePro(minoskin1, source, dest, empty, 0, WHITE);
+            }
+        }
+
 
     }
     
