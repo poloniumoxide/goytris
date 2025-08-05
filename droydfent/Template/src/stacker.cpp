@@ -13,7 +13,7 @@
 
         held = MinoSet({{271000, 271000}});
 
-        Texture2D minoskin1_ = LoadTexture("/Users/ericyang/Desktop/goytris/droydfent/Template/assets/GlassMaster.png");
+        Texture2D minoskin1_ = LoadTexture((string(GetApplicationDirectory()).substr(0, string(GetApplicationDirectory()).size() - 4) + "assets/GlassMaster.png").c_str());
         minoskin1 = minoskin1_;
     }
     
@@ -90,7 +90,6 @@
                 hold();
             }
 
-            break;
 
             t = control.next();
         }
@@ -172,7 +171,7 @@
 
     int Stacker::softdrop(int v) {
         int final = 0;
-        for (int i = 0; i <= abs(v); i += v/abs(v)) {
+        for (int i = 0; abs(i) <= abs(v); i += v/abs(v)) {
             if (!fit(tetro, 0, i)) {
                 break;
             }
