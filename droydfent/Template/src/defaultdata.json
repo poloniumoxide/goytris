@@ -11,8 +11,8 @@
 	},
 	"handling" : {
 		"das" : 10,
-		"arr" : 2,
-		"sdf" : 2
+		"arr" : 1,
+		"sdf" : 1
 	},
 	"keybinds" : {
 		"kleft" : "KEY_LEFT",

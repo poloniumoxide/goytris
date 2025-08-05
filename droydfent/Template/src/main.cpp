@@ -9,6 +9,7 @@
 #include <string>
 #include <filesystem>
 
+
 #include "jsonparser.h"
 #include "entity.h"
 
@@ -23,13 +24,20 @@ int main()
 {
 	InitWindow(1000, 1000, "stacka");
 
-	ChangeDirectory(GetApplicationDirectory());
-
-	cout << GetWorkingDirectory() << endl;
 
 	//SetTargetFPS(60);
 	
-    //GetWorkingDirectory();
+    string workingdir = GetApplicationDirectory();
+
+    for (int i = 0; i < 4; i++) {
+    	workingdir.pop_back();
+    }
+
+    ChangeDirectory(workingdir.c_str());
+
+    cout << GetWorkingDirectory() << endl;
+    cout << string(GetApplicationDirectory()) + "src/defaultdata.json" << endl;
+
 	
 /*
 	cout << "POOm" << endl;
@@ -55,6 +63,7 @@ int main()
     
         	EndDrawing();
         	float temp = GetFrameTime();
+        	//cout << temp << endl;
         	if (temp < FRAME){
         		WaitTime(FRAME-temp);
         	}

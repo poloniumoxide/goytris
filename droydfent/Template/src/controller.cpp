@@ -64,12 +64,17 @@
             inputs.push_back(9);
         }
         if (held[6] > 0) {
-            if ((int)D["handling"]["sdf"] == 0) {
+            if (held[6]%(int)D["handling"]["sdf"] == 0) {
+
+                inputs.push_back(1);
+            }
+        }
+        if ((int)D["handling"]["sdf"] == 0) {
+
+            if (held[6] == 1) {
                 for (int i = 0; i < 40; i++) {
                     inputs.push_back(1);
                 }
-            } else if (held[6]%(int)D["handling"]["sdf"] == 0) {
-                inputs.push_back(1);
             }
         }
         if (held[7] == 1) {
