@@ -15,6 +15,9 @@
 
         Texture2D minoskin1_ = LoadTexture((string(GetApplicationDirectory()).substr(0, string(GetApplicationDirectory()).size() - 4) + "assets/GlassMaster.png").c_str());
         minoskin1 = minoskin1_;
+
+        vector<int> dist_(4); dist = dist_; // dist from edge
+
     }
     
     
@@ -61,6 +64,45 @@
         if (active) return;
         active = true;
         tetro = bag.next();
+    }
+
+    int Stacker::calcdist(MinoSet piece, int dir, bool store) {
+            
+        //messy ahh implementation maybe clean up later
+
+        int final = 0;
+        int dx = 0; int dy = 0;
+        dir %= 4;
+        if (dir == 0) {
+            dy = 271000;
+        } else if (dir == 1) {
+            dx = 271000;
+        } else if (dir == 2) {
+            dy = -271000;
+        } else if (dir == 3) {
+            dx = -271000;
+        }
+        
+        int v = dx+dy;
+        for (int i = 0; abs(i) <= abs(v); i += v/abs(v)) {
+            if (dx != 0) {
+                if (!fit(piece, i, 0)) {
+                    break;
+                }
+            } else {
+                if (!fit(piece, 0, i)) {
+                    break;
+                }
+            }
+            final = i;
+        }
+
+
+        if (store) {
+            dist[dir] = final;    
+        }
+        return final;
+
     }
 
     void Stacker::getCommands() {
@@ -160,6 +202,10 @@
 
     void Stacker::lock() {
 
+        for (int i = 0; i < 4; i++) {
+            calcdist(tetro, i, true);
+        }
+
         for (int i = 0; i < tetro.minos.size(); i++) {
             board[tetro.minos[i].y][tetro.minos[i].x] = tetro.minos[i];
         }
@@ -183,16 +229,17 @@
 
     void Stacker::clear() { //call this whenever the board is modified
         int final = 0;
-        bool pc = true;
+        bool ispc = true;
 
         vector<int> clr(0);
+
 
         for (int i = 0; i < D["board"]["height"]; i++) {
             bool rowfull = true;
             for (int j = 0; j < D["board"]["width"]; j++) {
                 if (fit(j, i)) {
                     rowfull = false;
-                    pc = false;
+                    ispc = false;
                     break;
                 }
             }
@@ -221,6 +268,25 @@
             swap(board[itr], board[itr-clr.size()]);
             itr++;
         }
+
+        int spin = 0;
+        if (dist[0] + dist[1] + dist[2] + dist[3] == 0) {
+            spin = 2;
+            //immobile spin rule
+        }
+
+        //note: maybe can implement 3-corner rule for tsm and neo-tsds?
+
+        int pc = 0;
+        if (ispc) {
+            pc = 1;
+        }
+
+        //implement color clear?
+
+        clears.push_back({(int)clr.size(), tetro.type, spin, pc}); // first slot: # lines cleared, 2nd slot: piece used, 3rd slot: spin, 4th: pc
+
+        //entity will take from clears vec and turn it into atk 
 
     }
 
