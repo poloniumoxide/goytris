@@ -50,7 +50,9 @@ public:
     void lock();
     int softdrop(int);
     void clear();
+    void accept(Force);
     void draw(int, int, int);
+    static vector<Mino> booltomino(vector<bool>);
 
 
 };
