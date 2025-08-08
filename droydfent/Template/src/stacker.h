@@ -30,6 +30,7 @@ public:
     bool active; //active tetromino?
     int turn;
     vector<vector<int>> clears;
+    vector<int> dist;
 
     Texture2D minoskin1;
 
@@ -40,6 +41,7 @@ public:
     bool fit(Mino, int = 0, int = 0);
     bool fit(int = 0, int = 0);
     void spawn();
+    int calcdist(MinoSet, int = 0, bool = true);
     void getCommands();
     void hold();
     void move(int);
