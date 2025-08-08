@@ -290,6 +290,36 @@
 
     }
 
+    void Stacker::accept(Force f) { //take in garbage lines to the board (directly injects them, does not make it to garbage queue cuz stacker doesnt manage that)
+        //btw does not take into account the accept 8 lines only per piece thing, just does it all
+
+        //NOTE: MAKE SURE F HAS ONLY INTEGER STRENGTH!! ENTITY SHOULD SANITIZE THIS!!!
+        for (int i = 0; i < f.fnet.size(); i++) {
+            //shift board up
+            int disp = f.fnet[i].strength; //convert double to int
+            
+            for (int i = (int)D["board"]["height"] - disp - 1; i >= 0; i--) {
+                swap(board[i], board[i+disp]);
+            }
+
+            for (int i = 0; i < disp; i++) {
+                auto g = booltomino(f.fnet[i].holes);
+                board[i] = g;
+            }
+
+            bool flag = false;
+            while(calcdist(tetro, 2) == 0) {
+                tetro.move(0, 1);
+                flag = true;
+            }
+            if (flag) tetro.move(0, -1);
+        }
+
+        //also try to not call this unless a piece is placed.
+        //this moves the piece up if it is touching the bottom
+
+    }
+
     void Stacker::draw(int x, int y, int sz) {
         //temporary; should use assets later
         DrawRectangleLines(x, y, (int)D["board"]["width"]*sz, (int)D["board"]["height"]*sz, WHITE);
@@ -379,5 +409,18 @@
         }
 
 
+    }
+
+    vector<Mino> Stacker::booltomino(vector<bool> holes) {
+        vector<Mino> ans(holes.size());
+        for (int i = 0; i < holes.size(); i++) {
+            int t = 0;
+            if (!holes[i]) {
+                t = 17;
+            }
+            Mino m(i, 0, t);
+            ans[i] = m;
+        }
+        return ans;
     }
     

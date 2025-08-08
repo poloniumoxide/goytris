@@ -2,6 +2,7 @@
 
 Entity::Entity() : atkbar(0, 0), defbar(0, 0) {
     stack = Stacker();
+    tick = 0;
 }
 
 void Entity::run() {
@@ -9,10 +10,14 @@ void Entity::run() {
     stack.run();
     draw();
     send();
+    tick++;
 }
 
 void Entity::sent() {
-
+    if (tick % 60 == 0) {
+        Force f(1, 0, {false, false, false, false, false, false, false, false, false, true});
+        stack.accept(f);
+    }
 }
 
 void Entity::send() {

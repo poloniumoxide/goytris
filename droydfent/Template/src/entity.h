@@ -11,6 +11,7 @@ using namespace std;
 class Entity {
 public:
     int hp;
+    int tick;
     vector<int> attack_table;
     Stacker stack;
     Force atkbar;
