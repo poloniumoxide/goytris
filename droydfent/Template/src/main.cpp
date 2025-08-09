@@ -35,24 +35,7 @@ int main()
 
     ChangeDirectory(workingdir.c_str());
 
-    cout << GetWorkingDirectory() << endl;
-    cout << string(GetApplicationDirectory()) + "src/defaultdata.json" << endl;
-
 	
-/*
-	cout << "POOm" << endl;
-	ifstream temp("/Users/ericyang/Desktop/goytris/droydfent/Template/src/defaultdata.json");
-
-	if (!temp.is_open()) {
-		cout << "NIGGER" << endl;
-	}
-	
-
-	cout << "yo" << temp.rdbuf() << endl;
-
-	//json E{json::parse(temp)};
-
-*/	
 	Entity thegoy = Entity();
 
 	while (!WindowShouldClose()) {
