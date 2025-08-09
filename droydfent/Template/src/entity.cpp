@@ -6,22 +6,34 @@ Entity::Entity() : atkbar(0, 0), defbar(0, 0) {
 }
 
 void Entity::run() {
-    sent();
+    sentstack();
     stack.run();
     draw();
-    send();
+    sendstack();
     tick++;
 }
 
-void Entity::sent() {
+void Entity::sentstack() {
     if (tick % 60 == 0) {
-        Force f(1, 0, {false, false, false, false, false, false, false, false, false, true});
+        Force f(1, 0, {false, false, false, false, false, false, true, false, false, false});
         stack.accept(f);
     }
+    
 }
 
-void Entity::send() {
+void Entity::sendstack() { //process clears
+    vector<int> clear = stack.action();
+    while (clear.size() != 0) {
+        //apply attack table, atk stats, relics, whatevuh
 
+        vector<int> atktable = {0, 1, 2, 4};
+
+        Force f(atktable[clear[0]], 0, {false, false, false, false, false, false, true, false, false, false});
+
+        atkbar.merge(f);
+
+        clear = stack.action();
+    }
 }
 
 void Entity::draw() {

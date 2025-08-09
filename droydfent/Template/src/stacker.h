@@ -14,6 +14,7 @@
 #include <vector>
 #include <cstdlib>
 #include <algorithm>
+#include <deque>
 
 using namespace std;
 
@@ -29,7 +30,7 @@ public:
     int xi, yi;
     bool active; //active tetromino?
     int turn;
-    vector<vector<int>> clears;
+    deque<vector<int>> clears;
     vector<int> dist;
 
     Texture2D minoskin1;
@@ -53,6 +54,7 @@ public:
     void accept(Force);
     void draw(int, int, int);
     static vector<Mino> booltomino(vector<bool>);
+    vector<int> action();
 
 
 };

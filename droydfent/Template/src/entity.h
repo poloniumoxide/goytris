@@ -20,8 +20,8 @@ public:
     Entity();
 
     void run();
-    void send();
-    void sent();
+    void sendstack();
+    void sentstack();
     void draw();
 };
 

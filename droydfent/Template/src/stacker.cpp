@@ -307,12 +307,10 @@
                 board[i] = g;
             }
 
-            bool flag = false;
-            while(calcdist(tetro, 2) == 0) {
+            while (!fit(tetro)) {
                 tetro.move(0, 1);
-                flag = true;
             }
-            if (flag) tetro.move(0, -1);
+
         }
 
         //also try to not call this unless a piece is placed.
@@ -409,6 +407,7 @@
         }
 
 
+
     }
 
     vector<Mino> Stacker::booltomino(vector<bool> holes) {
@@ -416,11 +415,23 @@
         for (int i = 0; i < holes.size(); i++) {
             int t = 0;
             if (!holes[i]) {
-                t = 17;
+                t = 18;
             }
             Mino m(i, 0, t);
             ans[i] = m;
         }
         return ans;
+    }
+
+    vector<int> Stacker::action() {
+        
+        if (clears.empty()) {
+            return {};
+        }
+
+        auto ans = clears.front();
+        clears.pop_front();
+        return ans;
+
     }
     
