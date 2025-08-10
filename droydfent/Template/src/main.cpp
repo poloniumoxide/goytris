@@ -12,6 +12,7 @@
 
 #include "jsonparser.h"
 #include "entity.h"
+#include "menu.h"
 
 using namespace std;
 using json = nlohmann::json;

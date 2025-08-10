@@ -1,0 +1,31 @@
+#ifndef BUTTON_H
+#define BUTTON_H
+
+#include <vector>
+#include <iostream>
+#include <string>
+#include <map>
+#include <raylib.h>
+#include "jsonparser.h"
+
+#include "magic_enum.hpp"
+
+using namespace std;
+
+class Button {
+public:
+
+    string name;
+    string menuname;
+	map<int, string> neighbors;
+	int x, y;
+	Texture2D buttonskin;
+
+    Button(string = "main", string = "start"); //enum(key) to action (button name, gamestate name)
+    string interact(int);
+    void draw();
+    void run();
+
+};
+
+#endif

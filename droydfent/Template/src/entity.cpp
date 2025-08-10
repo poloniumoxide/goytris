@@ -14,11 +14,15 @@ void Entity::run() {
 }
 
 void Entity::sentstack() {
+    
     if (tick % 60 == 0) {
         Force f(1, 0, {false, false, false, false, false, false, true, false, false, false});
         stack.accept(f);
     }
-    
+
+    stack.accept(defbar);
+    defbar.clear();
+
 }
 
 void Entity::sendstack() { //process clears
