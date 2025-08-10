@@ -1,3 +1,3 @@
 #include "global.h"
 
-string gamestate = "main menu";
+string gamestate = "main";
