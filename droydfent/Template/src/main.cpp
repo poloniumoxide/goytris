@@ -37,13 +37,15 @@ int main()
     ChangeDirectory(workingdir.c_str());
 
 	
-	Entity thegoy = Entity();
+	//Entity thegoy = Entity();
+	Menu mainmenu("main");
 
 	while (!WindowShouldClose()) {
         	BeginDrawing();
-            	ClearBackground(BLACK);
-            	//thelooper
-            	thegoy.run();
+            ClearBackground(BLACK);
+            //thelooper
+            //thegoy.run();
+            mainmenu.run();
     
         	EndDrawing();
         	float temp = GetFrameTime();

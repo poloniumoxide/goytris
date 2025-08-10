@@ -8,9 +8,12 @@
 		
 		auto loc = D["menu"][menuname][name];
 
-		for (auto itr = loc.begin(); itr != loc.end(); itr++) {
+		for (auto itr = loc["neighbors"].begin(); itr != loc["neighbors"].end(); itr++) {
 			
 			auto ekey = magic_enum::enum_cast<KeyboardKey>(itr.key());
+			if (!ekey.has_value()){
+				throw runtime_error(itr.key());
+			}
 			neighbors.insert({(int)ekey.value(), itr.value()});
 		
 		}

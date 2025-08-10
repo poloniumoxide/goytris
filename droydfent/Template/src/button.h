@@ -6,7 +6,11 @@
 #include <string>
 #include <map>
 #include <raylib.h>
+#include <stdexcept>
 #include "jsonparser.h"
+
+#define MAGIC_ENUM_RANGE_MIN -256
+#define MAGIC_ENUM_RANGE_MAX 512
 
 #include "magic_enum.hpp"
 
