@@ -1,15 +1,25 @@
 #include "stacker.h"
 
-    Stacker::Stacker(){
-        vector<Mino> row(D["board"]["width"]);
-        vector<vector<Mino>> board_(D["board"]["height"], row);
-        for (int i = 0; i < D["board"]["height"]; i++) {
-            for (int j = 0; j < D["board"]["width"]; j++) {
+    Stacker::Stacker(json loc_){
+
+        //cout << "BLACK ASS NIGGERS" << endl;
+
+        loc = loc_;
+
+        vector<Mino> row(loc["board"]["width"]);
+        vector<vector<Mino>> board_(loc["board"]["height"], row);
+        for (int i = 0; i < loc["board"]["height"]; i++) {
+            for (int j = 0; j < loc["board"]["width"]; j++) {
                 Mino m(j, i, 0);
                 board_[i][j] = m;
             }
         }
         board = board_;
+
+
+        active = false;
+        turn = true;
+
 
         held = MinoSet({{271000, 271000}});
 
@@ -19,15 +29,22 @@
         vector<int> dist_(4); dist = dist_; // dist from edge
 
     }
+
+    Stacker::Stacker() {
+
+    }
+
+
     
     
     void Stacker::run() {
-        if (turn <= 0) return; //turn based
+        if (turn == false) return; //turn based
         spawn();
         getCommands();
-        
+
         //run gravity
         //print onto board
+
     }
 
     bool Stacker::fit(MinoSet t, int dx, int dy, int dtheta) {
@@ -43,17 +60,20 @@
     }
 
     bool Stacker::fit(Mino t, int dx, int dy) {
+
     
-        if ((t.x+dx < 0) | (t.x+dx >= D["board"]["width"]) | (t.y+dy < 0) | (t.y+dy >= D["board"]["height"])) {
+        if ((t.x+dx < 0) | (t.x+dx >= loc["board"]["width"]) | (t.y+dy < 0) | (t.y+dy >= loc["board"]["height"])) {
             return false;
         }
+
         return (board[t.y + dy][t.x + dx].type <= 1);
+
     
     }
 
     bool Stacker::fit(int x, int y) {
         
-        if ((x < 0) | (x >= D["board"]["width"]) | (y < 0) | (y >= D["board"]["height"])) {
+        if ((x < 0) | (x >= loc["board"]["width"]) | (y < 0) | (y >= loc["board"]["height"])) {
             return false;
         }
         return (board[y][x].type <= 1);
@@ -61,9 +81,29 @@
     }
 
     void Stacker::spawn() {
+        
         if (active) return;
         active = true;
-        tetro = bag.next();
+        
+        if ((bag.csize() == 0) && (held.minos[0].x == 271000)) {
+            
+            turn = false;
+            active = false;
+        
+        } else if ((bag.csize() == 0) && (held.minos[0].x != 271000)) {
+
+            tetro = MinoSet({{271000, 271000}});
+            swap(held, tetro);
+            tetro.reset();
+            tetro.move(loc["board"]["xi"], loc["board"]["yi"]);
+
+        } else {
+
+            tetro = bag.next();
+            //set sizes and presets
+
+            tetro.move(loc["board"]["xi"], loc["board"]["yi"]);
+        }
     }
 
     int Stacker::calcdist(MinoSet piece, int dir, bool store) {
@@ -139,6 +179,7 @@
     
     void Stacker::hold() {
         tetro.reset();
+        tetro.move(loc["board"]["xi"], loc["board"]["yi"]);
         if (held.minos[0].x == 271000) {
             held = tetro;
             active = false;
@@ -146,6 +187,8 @@
             swap(held, tetro);
             tetro.reset();
         }
+        tetro.reset();
+        tetro.move(loc["board"]["xi"], loc["board"]["yi"]);
     }
 
     void Stacker::move(int v) {
@@ -169,13 +212,15 @@
         int table = 0;
         if (tetro.type-10 == 0) table = 1; //use special table for i pieces
 
-        for (int i = 0; i < D["srskicks"][table].size(); i++) {
+        //D["kicks"][loc["kicks"]]
+
+        for (int i = 0; i < D["kicks"][loc["kicks"]][table].size(); i++) {
 
             tetro.rotation %= 4;
 
-            vector<int> cur = D["srskicks"][table][tetro.rotation%4][i];
+            vector<int> cur = D["kicks"][loc["kicks"]][table][tetro.rotation%4][i];
 
-            vector<int> fin = D["srskicks"][table][(tetro.rotation+v)%4][i];
+            vector<int> fin = D["kicks"][loc["kicks"]][table][(tetro.rotation+v)%4][i];
 
             vector<int> dif = {cur[0] - fin[0], cur[1] - fin[1]};
 
@@ -234,9 +279,9 @@
         vector<int> clr(0);
 
 
-        for (int i = 0; i < D["board"]["height"]; i++) {
+        for (int i = 0; i < loc["board"]["height"]; i++) {
             bool rowfull = true;
-            for (int j = 0; j < D["board"]["width"]; j++) {
+            for (int j = 0; j < loc["board"]["width"]; j++) {
                 if (fit(j, i)) {
                     rowfull = false;
                     ispc = false;
@@ -245,7 +290,7 @@
             }
             if (rowfull) {
                 clr.push_back(i);
-                for (int j = 0; j < D["board"]["width"]; j++) {  //remove the blocks
+                for (int j = 0; j < loc["board"]["width"]; j++) {  //remove the blocks
                     Mino m(j, i, 0);
                     board[i][j] = m;
                 }
@@ -264,7 +309,7 @@
             itr++;
         }
 
-        while (itr < D["board"]["height"]) {
+        while (itr < loc["board"]["height"]) {
             swap(board[itr], board[itr-clr.size()]);
             itr++;
         }
@@ -298,7 +343,7 @@
             //shift board up
             int disp = f.fnet[i].strength; //convert double to int
             
-            for (int i = (int)D["board"]["height"] - disp - 1; i >= 0; i--) {
+            for (int i = (int)loc["board"]["height"] - disp - 1; i >= 0; i--) {
                 swap(board[i], board[i+disp]);
             }
 
@@ -320,11 +365,11 @@
 
     void Stacker::draw(int x, int y, int sz) {
         //temporary; should use assets later
-        DrawRectangleLines(x, y, (int)D["board"]["width"]*sz, (int)D["board"]["height"]*sz, WHITE);
-        for (int i = 0; i < D["board"]["height"]; i++) {
-            for (int j = 0; j < D["board"]["width"]; j++) {
+        DrawRectangleLines(x, y, (int)loc["board"]["width"]*sz, (int)loc["board"]["height"]*sz, WHITE);
+        for (int i = 0; i < loc["board"]["height"]; i++) {
+            for (int j = 0; j < loc["board"]["width"]; j++) {
 
-                int ti = (int)D["board"]["height"] - i - 1;
+                int ti = (int)loc["board"]["height"] - i - 1;
 
                 int col = board[i][j].type - 10;
                 if (col < 0) continue;
@@ -343,7 +388,7 @@
 
             for (Mino m : tetro.minos) {
                 //cout << m.x << "OLD" << m.y << endl;
-                int ti = (int)D["board"]["height"] - m.y - 1;
+                int ti = (int)loc["board"]["height"] - m.y - 1;
                 int col = m.type - 10;
                 Rectangle source = {(float)col*(float)minoskin1.width/12.0f, 0, (float)(minoskin1.width/12), (float)(minoskin1.height)};
                 Rectangle dest = {(float)(x+sz*m.x), (float)(y+sz*ti), (float)sz, (float)sz};
@@ -355,7 +400,7 @@
 
             for (Mino m : tetro.minos) {
                 //cout << m.x << "OLD" << m.y << endl;
-                int ti = (int)D["board"]["height"] - m.y - 1;
+                int ti = (int)loc["board"]["height"] - m.y - 1;
                 int col = m.type - 10;
                 Rectangle source = {(float)col*(float)minoskin1.width/12.0f, 0, (float)(minoskin1.width/12), (float)(minoskin1.height)};
                 Rectangle dest = {(float)(x+sz*m.x), (float)(y+sz*ti), (float)sz, (float)sz};
@@ -370,7 +415,7 @@
 
             mx /= 2; tmy /= 2;
 
-            float my = (float)D["board"]["height"] - tmy - 1;
+            float my = (float)loc["board"]["height"] - tmy - 1;
 
             mx += 0.5; my += 0.5;
 
@@ -391,16 +436,22 @@
                 Vector2 empty = {0, 0};
                 DrawTexturePro(minoskin1, source, dest, empty, 0, WHITE);
             }
+            cout << (y + sz*(36)) << endl;
         }
 
         //draw preview
 
-        for (int i = 0; i < (int)D["board"]["preview"]; i++) {
+        for (int i = 0; i < (int)loc["board"]["preview"]; i++) {
+            //cout << bag.csize() << endl;
+            if (i >= bag.csize()) {
+                break;
+            }
             auto temp = bag.view(i);
+            temp.move(loc["board"]["xi"], loc["board"]["yi"]);
             for (Mino m : temp.minos) {
                 int col = m.type - 10;
                 Rectangle source = {(float)col*(float)minoskin1.width/12.0f, 0, (float)(minoskin1.width/12), (float)(minoskin1.height)};
-                Rectangle dest = {(float)(x+(sz*((int)D["board"]["width"]+m.x-2))), (float)(y + sz*(36-m.y+(4*i))), (float)sz, (float)sz};
+                Rectangle dest = {(float)(x+(sz*((int)loc["board"]["width"]+m.x-2))), (float)(y + sz*(36-m.y+(4*i))), (float)sz, (float)sz};
                 Vector2 empty = {0, 0};
                 DrawTexturePro(minoskin1, source, dest, empty, 0, WHITE);
             }

@@ -16,8 +16,10 @@ public:
     Stacker stack;
     Force atkbar;
     Force defbar;
+    string name;
+    json loc;
 
-    Entity();
+    Entity(string = "default");
 
     void run();
     void sendstack();
