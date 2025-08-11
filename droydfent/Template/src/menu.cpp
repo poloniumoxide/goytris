@@ -3,7 +3,6 @@
     Menu::Menu(string preset) {
     	
     	name = preset;
-    	D["menu"]["preset"];
 
     	auto loc = D["menu"][name];
 
@@ -31,7 +30,14 @@
 
         for (int i = 0; i < possible_keys.size(); i++) {
         	if (IsKeyPressed(possible_keys[i])) {
-        		current = buttons[current].interact(possible_keys[i]);
+        		string temp = buttons[current].interact(possible_keys[i]);
+        		if (temp[0] == 'M') {
+        			gamestate = temp.substr(1);
+        		} else if (temp[0] == 'B') {
+        			current = temp.substr(1);
+        		} else {
+
+        		}
         		break;
         	}
         }

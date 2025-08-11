@@ -29,12 +29,14 @@ public:
     MinoSet held;
     int xi, yi;
     bool active; //active tetromino?
-    int turn;
+    bool turn;
     deque<vector<int>> clears;
     vector<int> dist;
+    json loc;
 
     Texture2D minoskin1;
 
+    Stacker(json);
     Stacker();
     
     void run();

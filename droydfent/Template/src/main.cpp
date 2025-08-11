@@ -37,21 +37,28 @@ int main()
     ChangeDirectory(workingdir.c_str());
 
 	
-	//Entity thegoy = Entity();
+	Entity thegoy = Entity("default");
 	Menu mainmenu("main");
 
 	while (!WindowShouldClose()) {
         	BeginDrawing();
             ClearBackground(BLACK);
             //thelooper
-            //thegoy.run();
+            
             mainmenu.run();
+            if (gamestate == "goy") {
+            	thegoy.run();
+            }
     
         	EndDrawing();
         	float temp = GetFrameTime();
         	//cout << temp << endl;
         	if (temp < FRAME){
         		WaitTime(FRAME-temp);
+        	}
+
+        	if (gamestate == "quit") {
+        		break;
         	}
     	}
    	 CloseWindow();
