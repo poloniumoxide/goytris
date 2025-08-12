@@ -2,7 +2,6 @@
 
     Stacker::Stacker(json loc_){
 
-        //cout << "BLACK ASS NIGGERS" << endl;
 
         loc = loc_;
 
@@ -27,6 +26,8 @@
         minoskin1 = minoskin1_;
 
         vector<int> dist_(4); dist = dist_; // dist from edge
+
+        bag = Bag({0, 1, 2, 3, 4, 5, 6}, 7, 271000);
 
     }
 
@@ -84,20 +85,9 @@
         
         if (active) return;
         active = true;
+        cout << "yay" << endl;
         
-        if ((bag.csize() == 0) && (held.minos[0].x == 271000)) {
-            
-            turn = false;
-            active = false;
-        
-        } else if ((bag.csize() == 0) && (held.minos[0].x != 271000)) {
-
-            tetro = MinoSet({{271000, 271000}});
-            swap(held, tetro);
-            tetro.reset();
-            tetro.move(loc["board"]["xi"], loc["board"]["yi"]);
-
-        } else {
+        if (true) {
 
             tetro = bag.next();
             //set sizes and presets
@@ -387,7 +377,6 @@
             int dist = softdrop(-271000);
 
             for (Mino m : tetro.minos) {
-                //cout << m.x << "OLD" << m.y << endl;
                 int ti = (int)loc["board"]["height"] - m.y - 1;
                 int col = m.type - 10;
                 Rectangle source = {(float)col*(float)minoskin1.width/12.0f, 0, (float)(minoskin1.width/12), (float)(minoskin1.height)};
@@ -399,7 +388,6 @@
             tetro.move(0, -dist);
 
             for (Mino m : tetro.minos) {
-                //cout << m.x << "OLD" << m.y << endl;
                 int ti = (int)loc["board"]["height"] - m.y - 1;
                 int col = m.type - 10;
                 Rectangle source = {(float)col*(float)minoskin1.width/12.0f, 0, (float)(minoskin1.width/12), (float)(minoskin1.height)};
@@ -436,16 +424,11 @@
                 Vector2 empty = {0, 0};
                 DrawTexturePro(minoskin1, source, dest, empty, 0, WHITE);
             }
-            cout << (y + sz*(36)) << endl;
         }
 
         //draw preview
 
         for (int i = 0; i < (int)loc["board"]["preview"]; i++) {
-            //cout << bag.csize() << endl;
-            if (i >= bag.csize()) {
-                break;
-            }
             auto temp = bag.view(i);
             temp.move(loc["board"]["xi"], loc["board"]["yi"]);
             for (Mino m : temp.minos) {

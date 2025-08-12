@@ -20,11 +20,13 @@ public:
     int neutralx;
     int neutraly;
     int rotation;
+    vector<vector<int>> baseminos;
 
     MinoSet(vector<vector<int>> = {{0, 0}}, int = 0, int = 0, int = 0, int = 0, int = 0);
 
     void move(int = 0, int = 0, int = 0);
     void reset();
+    MinoSet copy();
 
 };
 

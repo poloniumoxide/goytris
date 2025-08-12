@@ -27,7 +27,7 @@ public:
 
     Button(string = "main", string = "start"); //enum(key) to action (button name, gamestate name)
     string interact(int);
-    void draw();
+    void draw(bool = false);
     void run();
 
 };

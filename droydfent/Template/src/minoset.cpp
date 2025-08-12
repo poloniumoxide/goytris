@@ -10,11 +10,17 @@
         neutraly = cy;
         rotation = 0;
         type = type_;
+        baseminos = minos_;
         for (auto x : minos_) {
             minos.push_back(Mino(x[0]+cx, -x[1]+cy, type));
         }
     }
 
+
+    MinoSet MinoSet::copy() {
+        vector<vector<int>> cpy = baseminos;
+        return MinoSet(cpy, cx, cy, type, ox, oy);
+    }
 
     void MinoSet::move(int dx, int dy, int dtheta) {
         for (int i = 0; i < minos.size(); i++) {
@@ -22,7 +28,6 @@
         }
         cx += dx; cy += dy;
         rotation += dtheta; rotation %= 4;
-        //cout << cx << " " << cy << endl;
         for (int i = 0; i < (dtheta % 4); i++) {
             //rotate 90 degrees about cx,cy
             for (int i = 0; i < minos.size(); i++) {
@@ -39,3 +44,5 @@
     void MinoSet::reset() {
         move(neutralx-cx, neutraly-cy, 4-rotation);
     }
+
+
