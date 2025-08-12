@@ -27,7 +27,7 @@
 
         vector<int> dist_(4); dist = dist_; // dist from edge
 
-        bag = Bag({0, 1, 2, 3, 4, 5, 6}, 7, 271000);
+        bag = Bag({0, 1, 2, 3, 4, 5, 6}, 7);
 
     }
 
@@ -85,7 +85,6 @@
         
         if (active) return;
         active = true;
-        cout << "yay" << endl;
         
         if (true) {
 
@@ -319,7 +318,7 @@
 
         //implement color clear?
 
-        clears.push_back({(int)clr.size(), tetro.type, spin, pc}); // first slot: # lines cleared, 2nd slot: piece used, 3rd slot: spin, 4th: pc
+        clears.push_back({(int)clr.size(), tetro.type - 10, spin, pc}); // first slot: # lines cleared, 2nd slot: piece used, 3rd slot: spin, 4th: pc
 
         //entity will take from clears vec and turn it into atk 
 
