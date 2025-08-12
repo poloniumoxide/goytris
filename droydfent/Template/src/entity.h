@@ -3,6 +3,7 @@
 
 #include "stacker.h"
 #include "force.h"
+#include "card.h"
 
 #include <vector>
 
@@ -10,14 +11,25 @@ using namespace std;
 
 class Entity {
 public:
-    int hp;
+
     int tick;
-    vector<int> attack_table;
     Stacker stack;
     Force atkbar;
     Force defbar;
     string name;
     json loc;
+
+    int speed;
+    int maxspeedbar;
+    int speedbar;
+    int hp;
+    int maxhp;
+
+    vector<vector<vector<vector<int>>>> atktable;
+    
+    float entropy;
+
+    vector<Card> hand;
 
     Entity(string = "default");
 
@@ -25,6 +37,7 @@ public:
     void sendstack();
     void sentstack();
     void draw();
+    void buildatktable(json);
 };
 
 #endif // MY_HEADER_H

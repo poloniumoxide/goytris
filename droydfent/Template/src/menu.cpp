@@ -44,7 +44,10 @@
 
         
         for (auto itr = buttons.begin(); itr != buttons.end(); itr++) {
-        	itr->second.run();
+        	if (itr->first == current) {
+        		itr->second.draw(true);
+        	}
+        	itr->second.draw(false);
         }
 
     }

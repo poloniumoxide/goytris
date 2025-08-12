@@ -36,7 +36,13 @@
 		draw();
 	}
 
-	void Button::draw() {
-		DrawTexture(buttonskin, x, y, WHITE);
+	void Button::draw(bool selected) {
+		cout << selected << endl;
+		if (!selected) {
+			DrawTexture(buttonskin, x, y, WHITE);	
+		} else {
+			DrawTexture(buttonskin, x, y, RED);
+		}
+		
 	}
 

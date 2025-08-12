@@ -16,14 +16,15 @@ using namespace std;
 class Bag {
 public:
 
-    vector<MinoSet> bag;
+    vector<vector<MinoSet>> bag;
     deque<MinoSet> tbag;
     int it = 0;
     int seed;
     mt19937 rngesus;
 
-    Bag(vector<int> = {0, 1, 2, 3, 4, 5, 6}, int = 271000);
-    Bag(vector<MinoSet>, int = 271000);
+    Bag(vector<int> = {0, 1, 2, 3, 4, 5, 6}, int = 7, int = 271000);
+    Bag(vector<MinoSet>, int = 7, int = 271000);
+    Bag(vector<vector<MinoSet>>, int = 271000);
 
     void seedrng(int);
     void reset();

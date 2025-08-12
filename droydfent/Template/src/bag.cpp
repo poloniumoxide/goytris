@@ -1,20 +1,44 @@
 #include "bag.h"
 
 
-    Bag::Bag(vector<int> bag_, int seed_) {
+    Bag::Bag(vector<int> bag_, int rep, int seed_) {
+
         
-        for (int i = 0; i < bag_.size(); i++) {
-            bag.push_back(MinoSet(D["tetrominos"][bag_[i]], 0, 0, bag_[i]+10, D["tetrominoscenter"][bag_[i]][0], D["tetrominoscenter"][bag_[i]][1]));
+        for (int i = 0; i < rep; i++) {
+            vector<MinoSet> n;
+            for (int j = 0; j < bag_.size(); j++) {
+                n.push_back(MinoSet(D["tetrominos"][bag_[j]], 0, 0, bag_[j]+10, D["tetrominoscenter"][bag_[j]][0], D["tetrominoscenter"][bag_[j]][1]));
+            }
+            bag.push_back(n);
         }
+
+
         
         seedrng(seed_);
         reset();
     }
 
-    Bag::Bag(vector<MinoSet> bag_, int seed_) {
+    Bag::Bag(vector<MinoSet> bag_, int rep, int seed_) {
+        
+        for (int j = 0; j < rep; j++) {
+            vector<MinoSet> cpy;
+            for (int i = 0; i < bag_.size(); i++) {
+                cpy.push_back(bag_[i].copy());
+            }
+            bag.push_back(cpy);
+        }
+
+        seedrng(seed_);
+        reset();
+
+    }
+
+    Bag::Bag(vector<vector<MinoSet>> bag_, int seed_) {
+        
         bag=bag_;
         seedrng(seed_);
         reset();
+
     }
 
     void Bag::seedrng(int seed_) {
@@ -28,7 +52,7 @@
 
     MinoSet Bag::next() {
         if (tbag.empty()) {
-            throw std::runtime_error("mcsdiy bag twiiinnnnnn");
+            addbag(1);
         }
 
         auto ans = tbag.front();
@@ -38,51 +62,37 @@
 
     void Bag::reset() {
         tbag.clear();
-        vector<MinoSet> n;
-        for (int i = 0; i < bag.size(); i++) {
-            n.push_back(bag[i]);
-        }
-        shuffle(n.begin(), n.end(), rngesus);
-        for (int i = 0; i < n.size(); i++) {
-            tbag.push_back(n[i]);
-        }
+        addbag(1);
     }
 
     void Bag::addbag(int rep) {
+        cout << "here"<< endl;
         for (int j = 0; j < rep; j++) {
+
             vector<MinoSet> n;
-            for (int i = 0; i < bag.size(); i++) {
-                n.push_back(bag[i]);
+            for (int i = 0; i < bag[it].size(); i++) {
+                n.push_back(bag[it][i].copy());
             }
+
             shuffle(n.begin(), n.end(), rngesus);
+
             for (int i = 0; i < n.size(); i++) {
                 tbag.push_back(n[i]);
             }
-        }
-    }
 
+            it++; it %= bag.size();
+        }
+        cout << "here!"<< endl;
+    }
 
     MinoSet Bag::view(int depth) { // 0 indexed depth
-        if (depth >= tbag.size()) {
-            throw std::runtime_error("invalid bag depth");
+        while (tbag.size() < depth+1) {
+            addbag(1);
         }
         return tbag[depth];
-    }
-
-    int Bag::csize() {
-        return tbag.size();
     }
 
     int Bag::size() {
         return bag.size();
     }
 
-    /*
-
-    MinoSet Bag::viewinf(int depth) { // 0 indexed depth
-        while (tbag.size() < depth+1) {
-            addbag(1);
-        }
-        MinoSet an(D["tetrominos"][tbag[depth]], D["board"]["xi"], D["board"]["yi"], tbag[depth]+10, D["tetrominoscenter"][tbag[depth]][0], D["tetrominoscenter"][tbag[depth]][1]);
-        return an;
-    }*/
