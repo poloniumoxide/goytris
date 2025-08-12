@@ -1,7 +1,7 @@
 #include "bag.h"
 
 
-    Bag::Bag(vector<int> bag_, int rep, int seed_) {
+    Bag::Bag(vector<int> bag_, int rep) {
 
         
         for (int i = 0; i < rep; i++) {
@@ -13,12 +13,10 @@
         }
 
 
-        
-        seedrng(seed_);
         reset();
     }
 
-    Bag::Bag(vector<MinoSet> bag_, int rep, int seed_) {
+    Bag::Bag(vector<MinoSet> bag_, int rep) {
         
         for (int j = 0; j < rep; j++) {
             vector<MinoSet> cpy;
@@ -28,19 +26,17 @@
             bag.push_back(cpy);
         }
 
-        seedrng(seed_);
         reset();
 
     }
 
-    Bag::Bag(vector<vector<MinoSet>> bag_, int seed_) {
+    Bag::Bag(vector<vector<MinoSet>> bag_) {
         
         bag=bag_;
-        seedrng(seed_);
         reset();
 
     }
-
+/*
     void Bag::seedrng(int seed_) {
         seed = seed_;
         if (seed == 271000) {
@@ -48,7 +44,7 @@
         }
         mt19937 rngesus_(seed);
         rngesus = rngesus_;
-    }
+    }*/
 
     MinoSet Bag::next() {
         if (tbag.empty()) {
@@ -66,7 +62,6 @@
     }
 
     void Bag::addbag(int rep) {
-        cout << "here"<< endl;
         for (int j = 0; j < rep; j++) {
 
             vector<MinoSet> n;
@@ -82,7 +77,6 @@
 
             it++; it %= bag.size();
         }
-        cout << "here!"<< endl;
     }
 
     MinoSet Bag::view(int depth) { // 0 indexed depth

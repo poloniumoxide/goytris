@@ -59,18 +59,31 @@ void Entity::sentstack() {
 
 }
 
-void Entity::sendstack() { //process clears
+void Entity::sendstack() { //process clears from stack
     vector<int> clear = stack.action();
-    while (clear.size() != 0) {
-        //apply attack table, atk stats, relics, whatevuh
+    while (clear.size() != 0) { //indicates that there are still stuff in stack's actions
+        //apply attack table, artifacts, cards and other stuff come later
 
-        vector<int> atktable = {0, 1, 2, 4};
+        //cout << "start" << endl;
+        //determine entropy?
 
-        Force f(atktable[clear[0]], 0, {false, false, false, false, false, false, true, false, false, false});
+        uniform_int_distribution<int> coldist(0, 9);
+        
+        /*
+        cout << clear.size() << clear[0] << " " << clear[1] << " " << clear[2] << " " << clear[3] << " " <<endl;
+        cout << atktable[clear[0]][clear[1]][clear[2]][clear[3]] << endl;
+        cout << coldist(rngesus) << endl;
+        */
+
+        Force f(atktable[clear[0]][clear[1]][clear[2]][clear[3]], 0, Force::genholes(coldist(rngesus), 10));
+
+        //cout << "end" << endl;
 
         atkbar.merge(f);
 
         clear = stack.action();
+
+        
     }
 }
 
