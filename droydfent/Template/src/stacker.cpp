@@ -85,7 +85,6 @@
         
         if (active) return;
         active = true;
-        cout << "yay" << endl;
         
         if (true) {
 

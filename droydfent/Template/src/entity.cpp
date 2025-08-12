@@ -20,8 +20,6 @@ Entity::Entity(string preset) : atkbar(0, 0), defbar(0, 0) {
 }
 
 void Entity::buildatktable(json loc) {
-    cout << "nick gurr" << endl;
-
     vector<int> v1(3);
     vector<vector<int>> v2(3, v1);
     vector<vector<vector<int>>> v3(7, v2);
@@ -32,16 +30,12 @@ void Entity::buildatktable(json loc) {
             for (int k = 0; k < 3; k++) { //spin
                 for (int l = 0; l < 3; l++) { //pc
                     int ans = loc["base"][k][i];
-                    cout << "nick gurr2" << endl;
                     ans += (int)loc["pc"][l];
-                    cout << "nick gurr3" << endl;
                     atktable[i][j][k][l] = ans;
-                    cout << "nick gurr4" << endl;
                 }
             }
         }
     }
-    cout << "nick gurr!" << endl;
 }
 
 void Entity::run() {
