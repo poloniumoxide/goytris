@@ -5,6 +5,7 @@
 #include <iostream>
 
 #include "entity.h"
+#include "menu.h"
 
 using namespace std;
 
@@ -15,13 +16,17 @@ public:
 
 	string stagestate;
 
-	Entity player;
+	vector<Entity> players;
 	vector<Entity> enemies; 
 
+	Entity focus;
 
-	Stage(string = "vsgoy", Entity = Entity("default"));
+	Menu selector;
+
+	Stage(string = "vsgoy", vector<Entity> = {Entity("default")});
 
 	void run();
+	void playerstarthand();
 
 };
 

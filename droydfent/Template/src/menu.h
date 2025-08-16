@@ -19,8 +19,10 @@ public:
 
     map<string, Button> buttons;
     string current;
+    bool signal;
 
     Menu(string);
+    Menu(int = 0);
 
     void run();
 

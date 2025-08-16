@@ -38,10 +38,13 @@
 
     
     
-    void Stacker::run() {
-        if (turn == false) return; //turn based
+    bool Stacker::run() {
+
         spawn();
         getCommands();
+        //cout << !active << endl;
+
+        return (!active);
 
         //run gravity
         //print onto board

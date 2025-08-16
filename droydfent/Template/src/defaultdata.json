@@ -97,5 +97,10 @@
 			"hp" : 100,
 			"maxhp" : 100
 		}
+	},
+	"stages" : {
+		"vsgoy" : {
+			"enemies" : ["default", "default"]
+		}
 	}
 }
