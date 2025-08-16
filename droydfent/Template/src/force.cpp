@@ -48,6 +48,7 @@
     }
 
     void Force::compcancel(Component& a, Component& b) {
+        //take into account attribute 1 and 2
         a.strength -= min(a.strength, b.strength);
         b.strength -= min(a.strength, b.strength);
     }

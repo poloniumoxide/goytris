@@ -50,11 +50,18 @@
 
     		if (selector.signal) {
     			focus.selectcard(stoi(selector.current));
+    			stagestate = "playerstack";
     		}
 
     	} else if (stagestate == "playerselectenemy") {
 
     	} else if (stagestate == "playerstack") {
+
+    		if (focus.turns <= 0) {
+    			stagestate = "neutral";
+    		}
+
+    		focus.run();
 
     	} else if (stagestate == "enemystack") {
 
