@@ -20,6 +20,23 @@
 
     }
 
+    Menu::Menu(int cyclic) {
+        
+        name = "custom";
+
+        current = " ";
+
+        for (int i = 0; i < cyclic; i++) {
+            string key = to_string(i);
+            if (current == " ") {
+                current = key;
+            }
+            buttons.insert({to_string(i), Button(i, cyclic)});
+        }
+
+
+    }
+
     void Menu::run() {
 
         if (!(gamestate == name)) {
@@ -35,8 +52,8 @@
         			gamestate = temp.substr(1);
         		} else if (temp[0] == 'B') {
         			current = temp.substr(1);
-        		} else {
-
+        		} else if (temp[0] == 'C') {
+                    signal = true;
         		}
         		break;
         	}

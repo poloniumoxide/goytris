@@ -29,17 +29,17 @@ public:
     MinoSet held;
     int xi, yi;
     bool active; //active tetromino?
-    bool turn;
     deque<vector<int>> clears;
     vector<int> dist;
     json loc;
+    bool turn;
 
     Texture2D minoskin1;
 
     Stacker(json);
     Stacker();
     
-    void run();
+    bool run();
     bool fit(MinoSet, int = 0, int = 0, int = 0);
     bool fit(Mino, int = 0, int = 0);
     bool fit(int = 0, int = 0);

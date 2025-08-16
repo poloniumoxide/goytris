@@ -25,6 +25,15 @@
 		
 	}
 
+	Button::Button(int pos, int max) {
+		name = to_string(pos);
+		int l = pos-1; l += max; l%= max;
+		int r = pos+1; r%=max;
+		neighbors[KEY_LEFT] = "B" + to_string(l);
+		neighbors[KEY_RIGHT] = "B" + to_string(r);
+		neighbors[KEY_Z] = "C" + to_string(r);
+	}
+
 	string Button::interact(int key) {
 		if (neighbors.find(key) == neighbors.end()) {
 			return " ";

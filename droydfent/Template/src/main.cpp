@@ -36,7 +36,6 @@ int main()
 
     ChangeDirectory(workingdir.c_str());
 
-	
 	Entity thegoy = Entity("default");
 	Menu mainmenu("main");
 

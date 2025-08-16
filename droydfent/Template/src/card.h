@@ -4,20 +4,22 @@
 #include <vector>
 #include <iostream>
 #include <functional>
-
-#include "bag.h"
+#include <map>
+#include "raylib.h"
 
 using namespace std;
 
 class Card {
 public:
 
-	function<void()> entityf;
-	function<void()> entityr;
-
 	string name;
+	string unname;
 
-    Card(string);
+	Texture2D texture;
+
+    Card(string = "sevenbag");
+
+    void draw();
 
 };
 

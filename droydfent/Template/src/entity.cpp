@@ -6,8 +6,6 @@ Entity::Entity(string preset) : atkbar(0, 0), defbar(0, 0) {
     auto loc_ = D["entities"][name];
     loc = loc_;
     stack = Stacker(loc);
-    
-    tick = 0;
 
     buildatktable(D["attacks"][loc["atktable"]]);
 
@@ -16,6 +14,16 @@ Entity::Entity(string preset) : atkbar(0, 0), defbar(0, 0) {
     speedbar = loc["speedbar"];
     hp = loc["hp"];
     maxhp = loc["maxhp"];
+
+    for (int i = 0; i < loc["deck"].size(); i++) {
+        deck.push_back(Card(loc["deck"][i]));
+    }
+
+    //initialize string to function
+
+
+    strtofunc["sevenbag"] = bind(&Entity::sevenbag, this);;
+    strtofunc["unsevenbag"] = bind(&Entity::unsevenbag, this);;
 
 }
 
@@ -39,11 +47,33 @@ void Entity::buildatktable(json loc) {
 }
 
 void Entity::run() {
+    
+    if (turns == 0) {
+        //draw();
+        return;
+    }
+
     sentstack();
-    stack.run();
-    draw();
+    
+    if (stack.run()) {
+        turns--;
+    }
+
+    if (turns == 0) {
+        unplay(last);
+    }
+
+    //draw();
     sendstack();
-    tick++;
+
+}
+
+void Entity::tick() {
+    speedbar += speed;
+}
+
+bool Entity::canturn() {
+    return (speedbar >= maxspeedbar);
 }
 
 void Entity::sentstack() {
@@ -87,6 +117,23 @@ void Entity::sendstack() { //process clears from stack
     }
 }
 
-void Entity::draw() {
+void Entity::selectcard(int index) {
+    last = hand[index];
+    play(hand[index]);
+}
+
+void Entity::startturn() {
+    //put hand to discard; draw a new hand from draw pile
+}
+
+void Entity::drawstack(int x, int y, int sz) { //draws the stack
     stack.draw(300, -500, 32);
+}
+
+void Entity::drawhand(int x, int y, int sz) {
+    //draws the hand of cards
+}
+
+void Entity::drawgoober(int x, int y, int sz) {
+    //draws the goobericon
 }
