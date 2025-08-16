@@ -37,7 +37,10 @@ int main()
     ChangeDirectory(workingdir.c_str());
 
 	Entity thegoy = Entity("default");
-	thegoy.turns += 7;
+	thegoy.reset();
+	thegoy.startturn();
+	thegoy.selectcard(0);
+
 	Menu mainmenu("main");
 
 	while (!WindowShouldClose()) {

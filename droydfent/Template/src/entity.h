@@ -5,10 +5,13 @@
 #include <map>
 #include <functional>
 #include <string>
+#include <random>
+#include <algorithm>
 
 #include "stacker.h"
 #include "force.h"
 #include "card.h"
+#include "global.h"
 
 using namespace std;
 
@@ -27,7 +30,10 @@ public:
     int hp;
     int maxhp;
 
+
     vector<vector<vector<vector<int>>>> atktable;
+
+    vector<function<Force(Force)>> atkfuncs;
     
     float entropy;
 
@@ -37,6 +43,8 @@ public:
     vector<Card> draw;
     vector<Card> exhaust;
 
+    int handsize;
+
     int turns;
 
     Card last;
@@ -44,6 +52,7 @@ public:
     Entity(string = "default");
 
     void run();
+    void reset();
     void sendstack();
     void sentstack();
     
@@ -62,7 +71,7 @@ public:
 
     //card based fundamentals
 
-    map<string, function<void()>> strtofunc;
+    map<string, function<Force(int, Force)>> strtofunc;
 
     void play(Card);
     void unplay(Card);
@@ -71,9 +80,9 @@ public:
 
     //cards
 
-    void sevenbag();
-    void unsevenbag();
+    Force sevenbag(int = 0, Force = Force());
+
 
 };
 
-#endif // MY_HEADER_H
+#endif

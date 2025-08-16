@@ -64,7 +64,10 @@
         	if (itr->first == current) {
         		itr->second.draw(true);
         	}
-        	itr->second.draw(false);
+            else {
+                itr->second.draw(false);    
+            }
+        	
         }
 
     }

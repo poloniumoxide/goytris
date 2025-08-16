@@ -13,6 +13,7 @@ public:
         double strength;
         double entropy;
         vector<bool> holes; // default: 10 long
+        vector<float> attributes; // used in amplifying and cancelling; 4 long
     };
 
     deque<Component> fnet;

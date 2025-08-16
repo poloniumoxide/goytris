@@ -90,12 +90,13 @@
 			},
 			"atktable" : "default",
 			"kicks" : "srs",
-			"deck" : ["sevenbag"],
+			"deck" : ["sevenbag", "sevenbag", "sevenbag", "sevenbag", "sevenbag", "sevenbag", "sevenbag"],
 			"speed" : 100,
 			"maxspeedbar" : 10000,
 			"speedbar" : 0,
 			"hp" : 100,
-			"maxhp" : 100
+			"maxhp" : 100,
+			"handsize" : 5
 		}
 	},
 	"stages" : {
