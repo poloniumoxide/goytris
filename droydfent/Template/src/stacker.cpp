@@ -42,6 +42,7 @@
 
         spawn();
         getCommands();
+        //cout << !active << endl;
 
         return (!active);
 

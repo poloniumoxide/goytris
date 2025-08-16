@@ -37,6 +37,7 @@ int main()
     ChangeDirectory(workingdir.c_str());
 
 	Entity thegoy = Entity("default");
+	thegoy.turns += 7;
 	Menu mainmenu("main");
 
 	while (!WindowShouldClose()) {

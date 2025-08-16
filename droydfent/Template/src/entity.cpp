@@ -48,22 +48,24 @@ void Entity::buildatktable(json loc) {
 
 void Entity::run() {
     
-    if (turns == 0) {
-        //draw();
+    drawstack(300, -500, 32);
+
+    if (turns <= 0) {
         return;
     }
 
     sentstack();
     
+    //cout << "running stack?" << endl;
+
     if (stack.run()) {
         turns--;
     }
 
-    if (turns == 0) {
+    if (turns <= 0) {
         unplay(last);
     }
 
-    //draw();
     sendstack();
 
 }
@@ -127,7 +129,7 @@ void Entity::startturn() {
 }
 
 void Entity::drawstack(int x, int y, int sz) { //draws the stack
-    stack.draw(300, -500, 32);
+    stack.draw(x, y, sz);
 }
 
 void Entity::drawhand(int x, int y, int sz) {
