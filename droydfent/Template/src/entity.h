@@ -12,6 +12,7 @@
 #include "force.h"
 #include "card.h"
 #include "global.h"
+#include "facker.h"
 
 using namespace std;
 
@@ -23,6 +24,9 @@ public:
     Force defbar;
     string name;
     json loc;
+    bool bot;
+    Texture2D goober;
+    string target;
 
     int speed;
     int maxspeedbar;
@@ -44,6 +48,7 @@ public:
     vector<Card> exhaust;
 
     int handsize;
+    int drawsperturn;
 
     int turns;
 
@@ -60,10 +65,13 @@ public:
     bool canturn();
 
     void selectcard(int);
+    void drawtohand(int = 1);
+    string gettarget();
 
     void drawstack(int, int, int);
-    void drawhand(int, int, int);
-    void drawgoober(int, int, int);
+    void drawhand(int, int, int, int = -1);
+    void drawgoober(int, int, int, bool);
+    void drawbars(int, int, int);
 
     void buildatktable(json);
 
@@ -71,12 +79,14 @@ public:
 
     //card based fundamentals
 
-    map<string, function<Force(int, Force)>> strtofunc;
+    //map<string, function<Force(int, Force)>> strtofunc;
 
     void play(Card);
     void unplay(Card);
+    void strtofunc(string, int, Force);
 
     void addturns(int = 7);
+    void speedcost(int = 10000);
 
     //cards
 

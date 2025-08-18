@@ -39,9 +39,10 @@
 
     void Menu::run() {
 
+        /*
         if (!(gamestate == name)) {
         	return;
-        }
+        }*/
 
         //get inputs
 

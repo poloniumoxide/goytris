@@ -19,7 +19,8 @@ public:
 	vector<Entity> players;
 	vector<Entity> enemies; 
 
-	Entity focus;
+	Entity* focus;
+	string targetting;
 
 	Menu selector;
 
@@ -27,6 +28,7 @@ public:
 
 	void run();
 	void playerstarthand();
+	vector<vector<int>> entitypositions(bool, int);
 
 };
 

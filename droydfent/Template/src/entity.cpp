@@ -5,7 +5,15 @@ Entity::Entity(string preset) : atkbar(0, 0), defbar(0, 0) {
     name = preset;
     auto loc_ = D["entities"][name];
     loc = loc_;
-    stack = Stacker(loc);
+
+    if (loc["control"] != "human") {
+        stack = Facker(loc);
+        bot = true;
+    } else {
+        stack = Stacker(loc); 
+        bot = false;
+    }
+    
 
     buildatktable(D["attacks"][loc["atktable"]]);
 
@@ -15,15 +23,24 @@ Entity::Entity(string preset) : atkbar(0, 0), defbar(0, 0) {
     hp = loc["hp"];
     maxhp = loc["maxhp"];
     turns = 0;
+    drawsperturn = loc["drawsperturn"];
+    handsize = loc["handsize"];
 
     for (int i = 0; i < loc["deck"].size(); i++) {
         deck.push_back(Card(loc["deck"][i]));
     }
 
+    for (int i = 0; i < deck.size(); i++) {
+        draw.push_back(deck[i]);   
+    }
+
+    goober = LoadTexture((string(GetApplicationDirectory()).substr(0, string(GetApplicationDirectory()).size() - 4) + "assets/entities/" + name + ".png").c_str());
+
     //initialize string to function
 
 
-    strtofunc["sevenbag"] = bind(&Entity::sevenbag, this, placeholders::_1, placeholders::_2);
+    //strtofunc["sevenbag"] = bind(&Entity::sevenbag, this, placeholders::_1, placeholders::_2);
+    //cout << "INIT" << endl;
 
 }
 
@@ -48,9 +65,10 @@ void Entity::buildatktable(json loc) {
 
 void Entity::run() {
 
+    if (!bot) {
+        drawstack(300, 800, 32);    
+    }
     
-    drawstack(300, -500, 32);
-
     if (turns <= 0) {
         return;
     }
@@ -59,6 +77,7 @@ void Entity::run() {
 
     if (stack.run()) {
         turns--;
+        if (bot) turns = 0;
     }
 
     if (turns <= 0) {
@@ -93,22 +112,13 @@ void Entity::sentstack() {
 void Entity::sendstack() { //process clears from stack
     vector<int> clear = stack.action();
     while (clear.size() != 0) { //indicates that there are still stuff in stack's actions
+        
         //apply attack table, artifacts, cards and other stuff come later
-
-        //cout << "start" << endl;
         //determine entropy?
 
         uniform_int_distribution<int> coldist(0, 9);
-        
-        /*
-        cout << clear.size() << clear[0] << " " << clear[1] << " " << clear[2] << " " << clear[3] << " " <<endl;
-        cout << atktable[clear[0]][clear[1]][clear[2]][clear[3]] << endl;
-        cout << coldist(rngesus) << endl;
-        */
 
         Force f(atktable[clear[0]][clear[1]][clear[2]][clear[3]], 0, Force::genholes(coldist(rngesus), 10));
-
-        //cout << "end" << endl;
 
         atkbar.merge(f);
 
@@ -119,6 +129,7 @@ void Entity::sendstack() { //process clears from stack
 }
 
 void Entity::selectcard(int index) {
+    target = hand[index].target;
     last = hand[index];
     play(hand[index]);
 }
@@ -130,14 +141,25 @@ void Entity::startturn() {
     }
     hand.clear();
 
+    drawtohand(drawsperturn);
+
+
+}
+
+void Entity::drawtohand(int n) {
+    
     int drawn = 0;
 
-    for (int i = 0; i < handsize; i++) {
+    n = min(handsize - (int)hand.size(), n);
+   
+
+    for (int i = 0; i < n; i++) {
         if (draw.size() == 0) break;
         hand.push_back(draw[draw.size() - 1]);
         draw.pop_back();
         drawn++;
     }
+
 
     if (draw.size() == 0) {
         shuffle(discard.begin(), discard.end(), rngesus);
@@ -147,7 +169,7 @@ void Entity::startturn() {
         discard.clear();
     }
 
-    for (int i = 0; i < min(handsize - drawn, (int)draw.size()); i++) {
+    for (int i = 0; i < min(n - drawn, (int)draw.size()); i++) {
         hand.push_back(draw[draw.size() - 1]);
         draw.pop_back();
     }
@@ -170,14 +192,57 @@ void Entity::reset() {
     stack = Stacker(loc);
 }
 
+string Entity::gettarget() {
+    return target;
+}
+
 void Entity::drawstack(int x, int y, int sz) { //draws the stack
     stack.draw(x, y, sz);
+    drawbars(x, y, sz);
 }
 
-void Entity::drawhand(int x, int y, int sz) {
+void Entity::drawhand(int x, int y, int sz, int selected) {
     //draws the hand of cards to the screen. it doesnt actually draw cards from the draw pile
+    for (int i = 0; i < hand.size(); i++) {
+        bool highlight = false;
+        if (selected == i) {
+            highlight = true;
+        }
+        hand[i].draw(x+100*i, y, sz, highlight);
+    }
 }
 
-void Entity::drawgoober(int x, int y, int sz) {
+void Entity::drawgoober(int x, int y, int sz, bool selected) {
     //draws the goobericon
+    Rectangle source = {0, 0, (float)(goober.width), (float)(goober.height)};
+    Rectangle dest = {(float)x, (float)y, (float)(goober.width), (float)(goober.height)};
+    Vector2 empty = {0, 0};
+
+    if (selected) {
+        DrawTexturePro(goober, source, dest, empty, 0, RED);
+    } else {
+        DrawTexturePro(goober, source, dest, empty, 0, WHITE);
+    }
+
+    
+
+    /*
+    if (selected) {
+        DrawTexturePro(texture, source, dest, empty, 0, RED);
+    } else {
+        DrawTexturePro(texture, source, dest, empty, 0, WHITE);
+    }*/
+
+}
+
+void Entity::drawbars(int x, int y, int sz){
+    //x, y represent bottom left
+    float k = defbar.getstrength();
+    
+    DrawRectangle(x-sz, y-k*sz, sz, k*sz, RED);
+
+    k = atkbar.getstrength();
+
+    DrawRectangle(x+sz*10, y-k*sz, sz, k*sz, RED);
+
 }

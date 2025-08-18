@@ -33,13 +33,14 @@ public:
     vector<int> dist;
     json loc;
     bool turn;
+    bool hashd;
 
     Texture2D minoskin1;
 
     Stacker(json);
     Stacker();
     
-    bool run();
+    virtual bool run();
     bool fit(MinoSet, int = 0, int = 0, int = 0);
     bool fit(Mino, int = 0, int = 0);
     bool fit(int = 0, int = 0);
@@ -53,8 +54,8 @@ public:
     void lock();
     int softdrop(int);
     void clear();
-    void accept(Force);
-    void draw(int, int, int);
+    virtual void accept(Force);
+    virtual void draw(int, int, int);
     static vector<Mino> booltomino(vector<bool>);
     vector<int> action();
 

@@ -53,5 +53,13 @@
         b.strength -= min(a.strength, b.strength);
     }
 
+    double Force::getstrength() {
+        double ans = 0.0f;
+        for (int i = 0; i < fnet.size(); i++) {
+            ans += fnet[i].strength;
+        }
+        return ans;
+    }
+
     //diminish, boost
 
