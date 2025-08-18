@@ -38,7 +38,7 @@ public:
     Texture2D minoskin1;
 
     Stacker(json);
-    Stacker();
+    //Stacker();
     
     virtual bool run();
     bool fit(MinoSet, int = 0, int = 0, int = 0);

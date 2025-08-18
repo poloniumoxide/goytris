@@ -1,19 +1,21 @@
 #include "entity.h"
 
-Entity::Entity(string preset) : atkbar(0, 0), defbar(0, 0) {
+Entity::Entity(string preset) : atkbar(0, 0), defbar(0, 0), stack(D["entities"]["default"]), fack(D["entities"]["littlegoy"]) {
     
     name = preset;
     auto loc_ = D["entities"][name];
     loc = loc_;
 
+    stack = Stacker(loc);
+    fack = Facker(loc);
+
     if (loc["control"] != "human") {
-        stack = Facker(loc);
         bot = true;
-    } else {
-        stack = Stacker(loc); 
+    } else { 
         bot = false;
     }
-    
+
+    //cout << "STACKFIT" << stack->fit(0, 0) << endl;
 
     buildatktable(D["attacks"][loc["atktable"]]);
 
@@ -65,26 +67,48 @@ void Entity::buildatktable(json loc) {
 
 void Entity::run() {
 
-    if (!bot) {
-        drawstack(300, 800, 32);    
+
+    if (bot) {
+        cout <<"ts" << endl;
+        if (turns <= 0) {
+            return;
+        }
+        sentstack();
+        cout <<"t1" << endl;
+        if (fack.run()) {
+            turns = 0;
+        }
+        cout <<"t2" << endl;
+        sendstack();
+        cout <<"t3" << endl;
+        if (turns <= 0) {
+            unselectcard(last);
+            atkbar.clear();
+        }
+        cout <<"te" << endl;
+    } else {
+        cout << "notabot" << endl;
+        drawstack(300, 800, 32);
+        if (turns <= 0) {
+            return;
+        }
+        cout << "notabot2" << endl;
+        sentstack();
+        //defbar.clear();
+        cout << "notabot3" << endl;
+
+        if (stack.run()) {
+            turns--;
+        }
+        sendstack();
+        if (turns <= 0) {
+            unselectcard(last);
+            atkbar.clear();
+        }
     }
+
+
     
-    if (turns <= 0) {
-        return;
-    }
-
-    sentstack();
-
-    if (stack.run()) {
-        turns--;
-        if (bot) turns = 0;
-    }
-
-    if (turns <= 0) {
-        unplay(last);
-    }
-
-    sendstack();
 
 }
 
@@ -97,20 +121,33 @@ bool Entity::canturn() {
 }
 
 void Entity::sentstack() {
-    
-    /*
-    if (tick % 60 == 0) {
-        Force f(1, 0, {false, false, false, false, false, false, true, false, false, false});
-        stack.accept(f);
-    }*/
 
-    stack.accept(defbar);
+    cout << defbar.getstrength() << endl;
+    cout << defbar.fnet.size() << endl;
+
+    if (bot) {
+        fack.accept(defbar);
+    } else {
+        stack.accept(defbar);
+    }
+    
+    cout << defbar.getstrength() << endl;
+    cout << defbar.fnet.size() << endl;
+
     defbar.clear();
 
 }
 
 void Entity::sendstack() { //process clears from stack
-    vector<int> clear = stack.action();
+
+    vector<int> clear;
+
+    if (bot) {
+        clear = fack.action();
+    } else {
+        clear = stack.action();
+    }
+    
     while (clear.size() != 0) { //indicates that there are still stuff in stack's actions
         
         //apply attack table, artifacts, cards and other stuff come later
@@ -122,16 +159,40 @@ void Entity::sendstack() { //process clears from stack
 
         atkbar.merge(f);
 
-        clear = stack.action();
+        if (bot) {
+            clear = fack.action();
+        } else {
+            clear = stack.action();
+        }
 
+        cout << "notabot?" << endl;
         
     }
+
+}
+
+void Entity::sendentity(Entity* e) {
+    //send to another entity
+    e->sententity(atkbar.clone());
+}
+
+void Entity::sententity(Force f) {
+    //get sent from another entity
+    //do some sort of modification on f
+    defbar.merge(f);
 }
 
 void Entity::selectcard(int index) {
     target = hand[index].target;
     last = hand[index];
     play(hand[index]);
+}
+
+void Entity::unselectcard(Card c) {
+    for (int i = 0; i < targets.size(); i ++) {
+        sendentity(targets[i]);
+    }
+    unplay(last);
 }
 
 void Entity::startturn() {
@@ -142,8 +203,6 @@ void Entity::startturn() {
     hand.clear();
 
     drawtohand(drawsperturn);
-
-
 }
 
 void Entity::drawtohand(int n) {
@@ -190,6 +249,8 @@ void Entity::reset() {
     turns = 0;
     speedbar = loc["speedbar"];
     stack = Stacker(loc);
+    fack = Facker(loc);
+
 }
 
 string Entity::gettarget() {
@@ -197,6 +258,7 @@ string Entity::gettarget() {
 }
 
 void Entity::drawstack(int x, int y, int sz) { //draws the stack
+    //DO NOT use for facker
     stack.draw(x, y, sz);
     drawbars(x, y, sz);
 }
@@ -223,15 +285,6 @@ void Entity::drawgoober(int x, int y, int sz, bool selected) {
     } else {
         DrawTexturePro(goober, source, dest, empty, 0, WHITE);
     }
-
-    
-
-    /*
-    if (selected) {
-        DrawTexturePro(texture, source, dest, empty, 0, RED);
-    } else {
-        DrawTexturePro(texture, source, dest, empty, 0, WHITE);
-    }*/
 
 }
 

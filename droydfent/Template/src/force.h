@@ -26,6 +26,7 @@ public:
     void merge(Force);
     void cancel(Force);
     void clear();
+    Force clone();
 
     double getstrength();
 
