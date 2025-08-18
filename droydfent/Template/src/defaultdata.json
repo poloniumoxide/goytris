@@ -43,8 +43,14 @@
     },
     "attacks" : {
     	"default" : {
-    		"base" : [[0, 0, 1, 2, 4, 8, 16], [0, 2, 4, 6, 8, 16, 32], [0, 1, 2, 3, 4, 8, 16]],
+    		"base" : [[0, 0, 1, 2, 4, 8, 16], [0, 1, 2, 3, 4, 8, 16], [0, 2, 4, 6, 8, 16, 32]],
     		"pc" : [0, 4, 8]
+    	}
+    },
+    "cards" : {
+    	"sevenbag" : {
+    		"type" : "normal",
+    		"target" : "1enemy"
     	}
     },
 	"menu" : {
@@ -96,12 +102,34 @@
 			"speedbar" : 0,
 			"hp" : 100,
 			"maxhp" : 100,
-			"handsize" : 5
+			"handsize" : 10,
+			"drawsperturn" : 5,
+			"control" : "human"
+		},
+		"littlegoy" : {
+			"board" : {
+				"height" : 40,
+				"width" : 10,
+				"xi" : 3,
+				"yi" : 19,
+				"preview" : 5
+			},
+			"atktable" : "default",
+			"kicks" : "srs",
+			"deck" : ["sevenbag", "sevenbag", "sevenbag", "sevenbag", "sevenbag", "sevenbag", "sevenbag"],
+			"speed" : 100,
+			"maxspeedbar" : 15000,
+			"speedbar" : 0,
+			"hp" : 100,
+			"maxhp" : 100,
+			"handsize" : 10,
+			"drawsperturn" : 5,
+			"control" : "littlegoy"
 		}
 	},
 	"stages" : {
 		"vsgoy" : {
-			"enemies" : ["default", "default"]
+			"enemies" : ["littlegoy"]
 		}
 	}
 }

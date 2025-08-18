@@ -13,6 +13,7 @@
 #include "jsonparser.h"
 #include "entity.h"
 #include "menu.h"
+#include "stage.h"
 
 using namespace std;
 using json = nlohmann::json;
@@ -23,10 +24,10 @@ double FRAME = (1.0F)/TFPS;
 
 int main()
 {
-	InitWindow(1000, 1000, "stacka");
+	InitWindow(1920, 1080, "stacka");
 
 
-	//SetTargetFPS(60);
+	//SetTargetFPS(60); //do not redeem this
 	
     string workingdir = GetApplicationDirectory();
 
@@ -36,10 +37,7 @@ int main()
 
     ChangeDirectory(workingdir.c_str());
 
-	Entity thegoy = Entity("default");
-	thegoy.reset();
-	thegoy.startturn();
-	thegoy.selectcard(0);
+	Stage vsgoy = Stage("vsgoy", {Entity("default")});
 
 	Menu mainmenu("main");
 
@@ -47,10 +45,12 @@ int main()
         	BeginDrawing();
             ClearBackground(BLACK);
             //thelooper
+            if (gamestate == "main") {
+            	mainmenu.run();	
+            }
             
-            mainmenu.run();
             if (gamestate == "goy") {
-            	thegoy.run();
+            	vsgoy.run();
             }
     
         	EndDrawing();

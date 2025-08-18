@@ -27,6 +27,8 @@ public:
     void cancel(Force);
     void clear();
 
+    double getstrength();
+
     static vector<bool> genholes(int, int = 10);
     static void compcancel(Component&, Component&);
 

@@ -18,6 +18,7 @@
 
         active = false;
         turn = true;
+        hashd = false;
 
 
         held = MinoSet({{271000, 271000}});
@@ -40,11 +41,13 @@
     
     bool Stacker::run() {
 
+        hashd = false;
+
         spawn();
         getCommands();
         //cout << !active << endl;
 
-        return (!active);
+        return hashd;
 
         //run gravity
         //print onto board
@@ -239,6 +242,8 @@
 
     void Stacker::lock() {
 
+        hashd = true;
+
         for (int i = 0; i < 4; i++) {
             calcdist(tetro, i, true);
         }
@@ -357,6 +362,9 @@
 
     void Stacker::draw(int x, int y, int sz) {
         //temporary; should use assets later
+
+        y -= sz * (int)loc["board"]["height"];
+
         DrawRectangleLines(x, y, (int)loc["board"]["width"]*sz, (int)loc["board"]["height"]*sz, WHITE);
         for (int i = 0; i < loc["board"]["height"]; i++) {
             for (int j = 0; j < loc["board"]["width"]; j++) {
