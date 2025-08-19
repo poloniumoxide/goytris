@@ -4,7 +4,11 @@
 
     Force::Force(double str, double entr, vector<bool> hole) {
         //add this into f
+        fnet.clear();
         fnet.push_back({str, entr, hole});
+        if (str == 0) {
+            clear();
+        }
     }
 
     void Force::merge(Force f) {
@@ -37,13 +41,20 @@
     }
 
     void Force::clear() {
-        deque<Component> cleared;
-        fnet = cleared;
+        fnet.clear();
     }
 
     vector<bool> Force::genholes(int hole, int len) {
         vector<bool> ans(len);
         ans[hole] = true;
+        return ans;
+    }
+
+    Force Force::clone() {
+        Force ans;
+        for (int i = 0; i < fnet.size(); i++) {
+            ans.fnet.push_back(fnet[i]);
+        }
         return ans;
     }
 

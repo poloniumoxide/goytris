@@ -45,7 +45,6 @@
     		
 	    	for (int i = 0; i < players.size(); i++) {
     			players[i].tick();
-    			//cout << players[i].speedbar << endl;
     		}
 
 	    	for (int i = 0; i < enemies.size(); i++) {
@@ -67,6 +66,14 @@
     				focus = &enemies[i];
     				stagestate = "enemystack";
     				focus->startturn();
+
+    				//temp just always target p1
+
+    				focus->selectcard(0);
+
+    				focus->targets.clear();
+    				focus->targets = {&players[0]};
+
     				return;
     			}
     		}
@@ -101,11 +108,20 @@
     		selector.run();
 
     		if (selector.signal) {
+    			focus->targets.clear();
     			if (targetting == "1enemy") {
     				//act on the card: focus->action(&enemies[i]);
+    				//for (auto p : focus->targets) {
+    				//	delete p;
+    				//}
+
+    				focus->targets = {&enemies[stoi(selector.current)]};
     			} else if (targetting == "1player") {
-    				
-    			}
+    				//for (auto p : focus->targets) {
+    				//	delete p;
+    				//}
+    				focus->targets = {&players[stoi(selector.current)]};
+    			}//add other things (aoe)
     			stagestate = "playerstack";
     		}
 
@@ -115,15 +131,25 @@
     			stagestate = "neutral";
     		}
 
+    		cout << "playerrun" << endl;
+
     		focus->run();
 
+    		cout << "playerran" << endl;
+
     	} else if (stagestate == "enemystack") {
+
 
     		if (focus->turns <= 0) {
     			stagestate = "neutral";
     		}
 
+    		cout << "enemyrun" << endl;
+
     		focus->run();
+
+    		cout << "enemyran" << endl;
+
     	}
 
     }

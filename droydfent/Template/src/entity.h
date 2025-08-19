@@ -20,6 +20,7 @@ class Entity {
 public:
 
     Stacker stack;
+    Facker fack;
     Force atkbar;
     Force defbar;
     string name;
@@ -27,6 +28,7 @@ public:
     bool bot;
     Texture2D goober;
     string target;
+    vector<Entity*> targets;
 
     int speed;
     int maxspeedbar;
@@ -58,13 +60,18 @@ public:
 
     void run();
     void reset();
+    
     void sendstack();
     void sentstack();
+
+    void sendentity(Entity*);
+    void sententity(Force);
     
     void tick();
     bool canturn();
 
     void selectcard(int);
+    void unselectcard(Card);
     void drawtohand(int = 1);
     string gettarget();
 

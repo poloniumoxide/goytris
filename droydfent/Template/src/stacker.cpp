@@ -13,6 +13,7 @@
                 board_[i][j] = m;
             }
         }
+
         board = board_;
 
 
@@ -32,20 +33,17 @@
 
     }
 
-    Stacker::Stacker() {
+    //Stacker::Stacker() {
 
-    }
+    //}
 
 
-    
-    
     bool Stacker::run() {
 
         hashd = false;
 
         spawn();
         getCommands();
-        //cout << !active << endl;
 
         return hashd;
 
@@ -336,22 +334,26 @@
         //btw does not take into account the accept 8 lines only per piece thing, just does it all
 
         //NOTE: MAKE SURE F HAS ONLY INTEGER STRENGTH!! ENTITY SHOULD SANITIZE THIS!!!
-        for (int i = 0; i < f.fnet.size(); i++) {
+        for (int j = 0; j < f.fnet.size(); j++) {
             //shift board up
-            int disp = f.fnet[i].strength; //convert double to int
+            int disp = f.fnet[j].strength; //convert double to int
+            cout << "DISP" << disp << endl;
             
             for (int i = (int)loc["board"]["height"] - disp - 1; i >= 0; i--) {
                 swap(board[i], board[i+disp]);
             }
+            cout << "DISP" << disp << endl;
 
             for (int i = 0; i < disp; i++) {
-                auto g = booltomino(f.fnet[i].holes);
+                auto g = booltomino(f.fnet[j].holes);
                 board[i] = g;
             }
+            cout << "DISP" << disp << endl;
 
             while (!fit(tetro)) {
                 tetro.move(0, 1);
             }
+            cout << "DISP" << disp << endl;
 
         }
 
@@ -381,6 +383,7 @@
         }
 
         //draw active mino
+
 
         if (active) {
 
@@ -422,7 +425,6 @@
             //draw shadows
 
         }
-
         
         //draw hold
 
@@ -449,7 +451,6 @@
                 DrawTexturePro(minoskin1, source, dest, empty, 0, WHITE);
             }
         }
-
 
 
     }
